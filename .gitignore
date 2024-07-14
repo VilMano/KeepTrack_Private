@@ -3,3 +3,27 @@ api/obj/
 api/appsettings.json
 api/movements.db
 api/wwwroot
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+android/source/keeptrack/node_modules
+android/source/keeptrack/.pnp
+android/source/keeptrack/.pnp.js
+
+# testing
+android/source/keeptrack/coverage
+
+# production
+android/source/keeptrack/build
+
+# misc
+android/source/keeptrack/.DS_Store
+android/source/keeptrack/.env.local
+android/source/keeptrack/.env.development.local
+android/source/keeptrack/.env.test.local
+android/source/keeptrack/.env.production.local
+
+android/source/keeptrack/npm-debug.log*
+android/source/keeptrack/yarn-debug.log*
+android/source/keeptrack/yarn-error.log*
