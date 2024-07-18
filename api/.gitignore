@@ -3,3 +3,4 @@ Expenses/obj/
 Expenses/appsettings.json
 Expenses/movements.db
 Expenses/wwwroot
+Expenses/Data/movements.db
