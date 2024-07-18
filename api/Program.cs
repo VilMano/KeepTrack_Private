@@ -1,7 +1,15 @@
+using Api.GraphQL.Shcema;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services
+    .AddGraphQLServer()
+    .AddMutationType<Mutation>()
+    .AddSubscriptionType<Subscription>()
+    .AddQueryType<Query>();
 
 var app = builder.Build();
 
