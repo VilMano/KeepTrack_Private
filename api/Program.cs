@@ -5,8 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services
-    .AddGraphQLServer()
+builder
+    .Services.AddGraphQLServer()
     .AddMutationType<Mutation>()
     .AddSubscriptionType<Subscription>()
     .AddQueryType<Query>();
@@ -28,8 +28,8 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapGraphQL();
 
 app.Run();
