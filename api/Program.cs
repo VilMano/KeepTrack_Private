@@ -8,7 +8,6 @@ builder.Services.AddControllersWithViews();
 builder
     .Services.AddGraphQLServer()
     .AddMutationType<Mutation>()
-    .AddSubscriptionType<Subscription>()
     .AddQueryType<Query>();
 
 var app = builder.Build();
