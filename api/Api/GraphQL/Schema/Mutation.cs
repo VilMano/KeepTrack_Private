@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Api.GraphQL.Shcema
 {
     public class Mutation : IMutation
@@ -12,9 +14,14 @@ namespace Api.GraphQL.Shcema
         /// <param name="movement">Movement to create</param>
         /// <returns>Task<Movement></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<Movement> CreateMovement(Movement movement)
+        public async Task<Movement> CreateMovement(Movement movement, [Service] MovementService service)
         {
-            throw new NotImplementedException();
+            ResultWrapper<Movement> newMovement = await service.CreateMovement(movement);
+
+            if(newMovement.Successful)
+                return newMovement.Results.FirstOrDefault();
+
+            return null;
         }
 
         /// <summary>
@@ -23,9 +30,14 @@ namespace Api.GraphQL.Shcema
         /// <param name="movement">Movement to update [id is mandatory]</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<Movement> UpdateMovement(Movement movement)
+        public async Task<Movement> UpdateMovement(Movement movement, [Service] MovementService service)
         {
-            throw new NotImplementedException();
+            ResultWrapper<Movement> updatedMovement = await service.UpdateMovement(movement);
+
+            if(updatedMovement.Successful)
+                return updatedMovement.Results.FirstOrDefault();
+
+            return null;
         }
 
         /// <summary>
@@ -34,9 +46,11 @@ namespace Api.GraphQL.Shcema
         /// <param name="id">Id of the movement to delete</param>
         /// <returns>Task<bool></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<bool> DeleteMovement(int id)
+        public async Task<bool> DeleteMovement(int id, [Service] MovementService service)
         {
-            throw new NotImplementedException();
+            ResultWrapper<bool> result = await service.DeleteMovement(id);
+
+            return result.Successful;
         }
 
         #endregion
@@ -49,9 +63,11 @@ namespace Api.GraphQL.Shcema
         /// <param name="id">Id of the user to delete</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<bool> DeleteUser(int id)
+        public async Task<bool> DeleteUser(int id, [Service] UserService service)
         {
-            throw new NotImplementedException();
+            ResultWrapper<bool> deleted = await service.DeleteUser(id);
+
+            return deleted.Successful;
         }
 
         /// <summary>
@@ -60,9 +76,14 @@ namespace Api.GraphQL.Shcema
         /// <param name="user">User to create</param>
         /// <returns>Task<User></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<User> CreateUser(User user)
+        public async Task<User> CreateUser(User user, [Service] UserService service)
         {
-            throw new NotImplementedException();
+            ResultWrapper<User> createdUser = await service.CreateUser(user);
+
+            if(createdUser.Successful)
+                return createdUser.Results.FirstOrDefault();
+
+            return null;
         }
 
         /// <summary>
@@ -71,9 +92,14 @@ namespace Api.GraphQL.Shcema
         /// <param name="user">User to update [id is mandatory]</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<User> UpdateUser(User user)
+        public async Task<User> UpdateUser(User user, [Service] UserService service)
         {
-            throw new NotImplementedException();
+            ResultWrapper<User> updatedUser = await service.UpdateUser(user);
+
+            if(updatedUser.Successful)
+                return updatedUser.Results.FirstOrDefault();
+
+            return null;
         }
 
         #endregion

@@ -4,6 +4,8 @@ api/appsettings.json
 api/wwwroot
 api/Data/movements.db
 
+android/source/keeptrack/android
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies

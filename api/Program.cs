@@ -3,7 +3,20 @@ using Api.GraphQL.Shcema;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
+
+builder.Services.AddTransient<IApiKeyValidation, ApiKeyValidation>();
+
+builder.Services.AddDbContext<ExpensesContext>();
+
+// repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>()
+.AddScoped<IMovementRepository, MovementRepository>()
+// services
+.AddScoped<IMovementService, MovementService>()
+.AddScoped<IUserService, UserService>()
+.AddScoped<MovementService>()
+.AddScoped<UserService>();
 
 builder
     .Services.AddGraphQLServer()
@@ -24,6 +37,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseMiddleware<ApiKeyMiddleware>();
 
 app.UseAuthorization();
 
