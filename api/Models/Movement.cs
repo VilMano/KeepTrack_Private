@@ -3,6 +3,7 @@ public class Movement{
     public float Value { get; set; } = 0;
     public string Description { get; set; } = string.Empty;
     public float UserShare { get; set; } = 0;
+    public DateTime CreatedOn { get; set; }
 
     public User User { get; set; } = new User();
 }

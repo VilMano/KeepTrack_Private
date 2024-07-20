@@ -1,24 +1,90 @@
-
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 public class MovementRepository : IMovementRepository
 {
-    public Task<ResultWrapper<Movement>> CreateMovement(Movement inputMovement)
+    private readonly ExpensesContext _context;
+
+    public MovementRepository(ExpensesContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
     }
 
-    public Task<bool> DeleteMovement(int id)
+    public async Task<List<Movement>> Movements(Expression<Func<Movement, bool>> expression)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var a = await _context.Movements.ToListAsync();
+            return await _context
+                .Movements.Where(expression)
+                .Include(m => m.User)
+                .ToListAsync<Movement>();
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
     }
 
-    public Task<ResultWrapper<Movement>> Movement(int id)
+    public async Task<Movement> CreateMovement(Movement inputMovement)
     {
-        throw new NotImplementedException();
+        try
+        {
+            EntityEntry<Movement> newMovement = await _context.Movements.AddAsync(inputMovement);
+            await _context.SaveChangesAsync();
+
+            return newMovement.Entity;
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
     }
 
-    public Task<ResultWrapper<Movement>> UpdateMovement(Movement inputMovement)
+    public async Task<bool> DeleteMovement(Movement movement)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _context.Movements.Remove(movement);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+        catch (System.Exception)
+        {
+            return false;
+            throw;
+        }
+    }
+
+    public async Task<Movement> Movement(int id)
+    {
+        try
+        {
+            return await _context
+                .Movements.Where(m => m.Id == id)
+                .Include(m => m.User)
+                .FirstOrDefaultAsync();
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task<Movement> UpdateMovement(Movement inputMovement)
+    {
+        try
+        {
+            EntityEntry<Movement> updatedUser = _context.Movements.Update(inputMovement);
+            await _context.SaveChangesAsync();
+
+            return updatedUser.Entity;
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
     }
 }

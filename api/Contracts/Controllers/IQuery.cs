@@ -5,19 +5,19 @@ public interface IQuery
     /// </summary>
     /// <param name="id">Id of the requested movement</param>
     /// <returns>Task<User></returns>
-    public Task<Movement> GetMovement(int id);
+    public Task<Movement> GetMovement(int id, [Service] MovementService service);
 
     /// <summary>
     /// Gets all movements for a certain month (0 - Jan, 1 - Feb...)
     /// </summary>
     /// <param name="month">Input from 0 - 11</param>
     /// <returns>Task<List<Movement>></returns>
-    public Task<List<Movement>> GetThisMonthMovements(int month);
+    public Task<List<Debt>> GetThisMonthMovements(int month, [Service] MovementService service);
 
     /// <summary>
     /// Gets a user by id
     /// </summary>
     /// <param name="id">Id of the requested user</param>
     /// <returns>Task<User></returns>
-    public Task<User> GetUser(int id);
+    public Task<User> GetUser(int id, [Service] UserService service);
 }
