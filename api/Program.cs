@@ -1,5 +1,4 @@
 using Api.GraphQL.Shcema;
-using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,13 +10,14 @@ builder.Services.AddTransient<IApiKeyValidation, ApiKeyValidation>();
 builder.Services.AddDbContext<ExpensesContext>();
 
 // repositories
-builder.Services.AddScoped<IUserRepository, UserRepository>()
-.AddScoped<IMovementRepository, MovementRepository>()
-// services
-.AddScoped<IMovementService, MovementService>()
-.AddScoped<IUserService, UserService>()
-.AddScoped<MovementService>()
-.AddScoped<UserService>();
+builder
+    .Services.AddScoped<IUserRepository, UserRepository>()
+    .AddScoped<IMovementRepository, MovementRepository>()
+    // services
+    .AddScoped<IMovementService, MovementService>()
+    .AddScoped<IUserService, UserService>()
+    .AddScoped<MovementService>()
+    .AddScoped<UserService>();
 
 builder
     .Services.AddGraphQLServer()
