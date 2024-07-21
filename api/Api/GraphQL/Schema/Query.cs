@@ -35,7 +35,23 @@ namespace Api.GraphQL.Shcema
         {
             ResultWrapper<List<Debt>> movements =  new ResultWrapper<List<Debt>>();
             
-            var totalExpensesByUser = await service.GetTotalByUser(month);
+            var totalExpensesByUser = await service.GetMonthlyDebtsByUser(month);
+            if(totalExpensesByUser.Successful)
+                return totalExpensesByUser.Results.ToList();
+            
+            return null;
+        }
+
+        /// <summary>
+        /// Gets all movements for a certain month (0 - Jan, 1 - Feb...)
+        /// </summary>
+        /// <param name="month">Input from 0 - 11</param>
+        /// <returns>Task<List<Movement>></returns>
+        public async Task<List<User>> GetMonthlyMovementsByUser(int month, [Service] MovementService service)
+        {
+            ResultWrapper<List<User>> users =  new ResultWrapper<List<User>>();
+            
+            var totalExpensesByUser = await service.GetMonthlyMovementsByUser(month);
             if(totalExpensesByUser.Successful)
                 return totalExpensesByUser.Results.ToList();
             
@@ -60,5 +76,11 @@ namespace Api.GraphQL.Shcema
             return null;
         }
         #endregion
+    }
+
+    class InputUser{
+        public int Id {get; set;}
+        public string Name { get; set;}
+        public List<Movement> Movements { get; set; } = new List<Movement>();
     }
 }

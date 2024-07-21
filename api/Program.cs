@@ -20,6 +20,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>()
 
 builder
     .Services.AddGraphQLServer()
+    .AddType<User>()
+    .AddType<Movement>()
     .AddMutationType<Mutation>()
     .AddQueryType<Query>();
 

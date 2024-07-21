@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -24,7 +25,6 @@ public class UserRepository : IUserRepository
             Console.WriteLine(ex.Message);
             return null;
         }
-
     }
 
     public async Task<bool> DeleteUser(User user)
@@ -63,11 +63,28 @@ public class UserRepository : IUserRepository
     {
         try
         {
-            return await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+            return await _context
+                .Users.Where(u => u.Id == id)
+                .Include(u => u.Movements)
+                .FirstOrDefaultAsync();
         }
         catch (System.Exception)
         {
-            
+            throw;
+        }
+    }
+
+    public async Task<List<User>> Users(Expression<Func<User, bool>> expression)
+    {
+        try
+        {
+            return await _context
+                .Users.Where(expression)
+                .Include(m => m.Movements)
+                .ToListAsync<User>();
+        }
+        catch (System.Exception)
+        {
             throw;
         }
     }
