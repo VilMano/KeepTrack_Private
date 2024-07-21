@@ -83,39 +83,34 @@ public class MovementService : IMovementService
                 m.CreatedOn.Month == month && m.CreatedOn.Year == DateTime.UtcNow.Year
             );
 
-            string username1 = "";
-            string username2 = "";
 
-            float user1Debt = 0;
-            float user2Debt = 0;
+
+
+
+            List<User> users = await _userRepository.Users(u => u.Id != 0);
+
+            List<Debt> debts = new List<Debt>();
+            
+            users.Sort((p, q) => p.Id.CompareTo(q.Id));
+
+            int it = 0;
+            foreach (User user in users)
+            {
+                // create empty user slot
+                debts.Add(new Debt());
+
+                // create user object
+                debts[it].UserName = user.Name;
+
+                it++;
+            }
 
             foreach (var spending in movements)
             {
-                switch (spending.User.Id)
-                {
-                    case 1:
-                        username1 = spending.User.Name;
-                        user2Debt += spending.Value - spending.UserShare;
-                        break;
-                    case 2:
-                        username2 = spending.User.Name;
-                        user1Debt += spending.Value - spending.UserShare;
-                        break;
-                    default:
-                        break;
-                }
+                debts[spending.User.Id-1].Value += spending.Value - spending.UserShare;
             }
 
-            Debt debt1 = new Debt();
-            debt1.UserName = username1;
-            debt1.Value = user1Debt;
-            result.Results.Add(debt1);
-
-            Debt debt2 = new Debt();
-            debt2.UserName = username2;
-            debt2.Value = user2Debt;
-            result.Results.Add(debt2);
-
+            result.Results = debts;
             result.Successful = true;
 
             return result;
@@ -138,7 +133,6 @@ public class MovementService : IMovementService
             );
 
             List<User> users = await _userRepository.Users(u => u.Id != 0);
-
             List<User> userMovements = new List<User>();
             int it = 0;
 
@@ -156,6 +150,14 @@ public class MovementService : IMovementService
                 // insert user
                 userMovements[it] = newUser;
                 it++;
+            }
+
+            // in case there are no movements: return users without movements
+            if (!movements.Any())
+            {
+                result.Results.Add(userMovements[0]);
+                result.Results.Add(userMovements[1]);
+                return result;
             }
 
             foreach (Movement movement in movements)
@@ -195,13 +197,22 @@ public class MovementService : IMovementService
         {
             Movement movementToUpdate = await _repository.Movement(inputMovement.Id);
 
-            movementToUpdate.Description = string.IsNullOrWhiteSpace(inputMovement.Description)
-                ? movementToUpdate.Description
-                : inputMovement.Description;
-            movementToUpdate.Value =
-                inputMovement.Value == 0 ? movementToUpdate.Value : inputMovement.Value;
-            movementToUpdate.UserShare =
-                inputMovement.UserShare == 0 ? movementToUpdate.UserShare : inputMovement.UserShare;
+            if (string.IsNullOrWhiteSpace(inputMovement.Description))
+                movementToUpdate.Description = movementToUpdate.Description;
+            else
+                movementToUpdate.Description = inputMovement.Description;
+
+
+            if (inputMovement.Value == 0)
+                movementToUpdate.Value = movementToUpdate.Value;
+            else
+                movementToUpdate.Value = inputMovement.Value;
+
+
+            if (inputMovement.UserShare == 0)
+                movementToUpdate.UserShare = movementToUpdate.UserShare;
+            else
+                movementToUpdate.UserShare = inputMovement.UserShare;
 
             Movement updatedMovement = await _repository.UpdateMovement(movementToUpdate);
 

@@ -1,4 +1,5 @@
 using Api.GraphQL.Shcema;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
