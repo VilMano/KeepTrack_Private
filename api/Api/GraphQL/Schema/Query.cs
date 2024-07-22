@@ -31,7 +31,7 @@ namespace Api.GraphQL.Shcema
         /// </summary>
         /// <param name="month">Input from 0 - 11</param>
         /// <returns>Task<List<Movement>></returns>
-        public async Task<List<Debt>> GetThisMonthMovements(int month, [Service] MovementService service)
+        public async Task<List<Debt>> GetMonthlyDebtByUser(int month, [Service] MovementService service)
         {
             ResultWrapper<List<Debt>> movements =  new ResultWrapper<List<Debt>>();
             
