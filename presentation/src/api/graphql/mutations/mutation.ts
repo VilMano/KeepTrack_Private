@@ -1,37 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const GET_MONTHLY_DEBTS_BY_USER = gql`
-query GetMonthlyDebtByUser($month: Int!){
-    monthlyDebtByUser(month: $month){
-      value
-      userName
-    }
-}
-`;
-
-export const GET_MONTHLY_MOVEMENTS_BY_USER = gql`
-  query GetMonthlyMovementsByUser($month: Int!){
-    monthlyMovementsByUser(month: $month){
-    id
-      name
-      movements{
-        description
-        value
-        userShare
-      }
-    }
-  }
-`;
-
-export const GET_USER_BY_ID = gql`
-  query GetUser($id: Int!){
-    user(id: $id){
-     id
-     name
-    }
-  }
-`;
-
 export const CREATE_USER = gql`
   mutation CreateUser($user: UserInput!){
    createUser(user: $user){
@@ -51,16 +19,6 @@ export const UPDATE_USER = gql`
 export const DELETE_USER = gql`
   mutation DeleteUser($id: Int!){
     deleteUser(id: $id)
-  }
-`;
-
-export const GET_MOVEMENT_BY_ID = gql`
-  query GetMovement($id: Int!){
-    movement(id: $id){
-      id
-      description
-      value
-    }
   }
 `;
 
@@ -85,3 +43,4 @@ export const DELETE_MOVEMENT = gql`
     deleteMovement(id: $id)    
   }
 `;
+

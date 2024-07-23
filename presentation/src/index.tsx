@@ -4,6 +4,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { Layout } from './components/Layout/Layout';
 import Debts from './components/Debts/Debts';
+import UserMovements from './components/Movements/UserMovements';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,6 +13,7 @@ root.render(
   <React.StrictMode>
     <Layout>
       <Debts></Debts>
+      <UserMovements></UserMovements>
     </Layout>
   </React.StrictMode>
 );
