@@ -1,57 +1,57 @@
-# {
-#   user(id: 1){
-#     id
-#     name
-#   }
-# }
+  {
+    user(id: 1){
+      id
+      name
+    }
+  }
 
-# mutation CreateUser($user: UserInput!){
-#   createUser(user: $user){
-#     id
-#   }
-# }
+  mutation CreateUser($user: UserInput!){
+    createUser(user: $user){
+      id
+    }
+  }
 
-# mutation UpdateUser($user: UserInput!){
-#   updateUser(user: $user){
-#     id
-#   }
-# }
+  mutation UpdateUser($user: UserInput!){
+    updateUser(user: $user){
+      id
+    }
+  }
 
-# mutation DeleteUser($id: Int!){
-#   deleteUser(id: $id){
+  mutation DeleteUser($id: Int!){
+    deleteUser(id: $id){
     
-#   }
-# }
+    }
+  }
 
-# {
-#   movement(id: 1){
-#     id
-#     description
-#     value
-#   }
-# }
+  {
+    movement(id: 1){
+      id
+      description
+      value
+    }
+  }
 
-# mutation CreateMovement($movement: MovementInput!){
-#   createMovement(movement: $movement){
-#     id
-#   }
-# }
+  mutation CreateMovement($movement: MovementInput!){
+    createMovement(movement: $movement){
+      id
+    }
+  }
 
-# mutation UpdateMovement($movement: MovementInput!){
-#   updateMovement(movement: $movement){
-#     id
-#   }
-# }
+  mutation UpdateMovement($movement: MovementInput!){
+    updateMovement(movement: $movement){
+      id
+    }
+  }
 
-# mutation DeleteMovement($id: Int!){
-#   deleteMovement(id: $id){
+  mutation DeleteMovement($id: Int!){
+    deleteMovement(id: $id){
     
-#   }
-# }
+    }
+  }
 
-# {
-#   thisMonthMovements(month: 6){
-#     value
-#     userName
-#   }
-# }
+  {
+    thisMonthMovements(month: 6){
+      value
+      userName
+    }
+  }

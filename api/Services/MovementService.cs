@@ -1,4 +1,5 @@
 using System.Data.Common;
+using Microsoft.Extensions.ObjectPool;
 using SQLitePCL;
 
 public class MovementService : IMovementService
@@ -83,31 +84,36 @@ public class MovementService : IMovementService
                 m.CreatedOn.Month == month && m.CreatedOn.Year == DateTime.UtcNow.Year
             );
 
-
-
-
-
             List<User> users = await _userRepository.Users(u => u.Id != 0);
 
             List<Debt> debts = new List<Debt>();
-            
+
             users.Sort((p, q) => p.Id.CompareTo(q.Id));
+
+            // create empty user slot
+            debts.Add(new Debt());
+            debts.Add(new Debt());
 
             int it = 0;
             foreach (User user in users)
             {
-                // create empty user slot
-                debts.Add(new Debt());
-
                 // create user object
                 debts[it].UserName = user.Name;
 
                 it++;
-            }
 
-            foreach (var spending in movements)
-            {
-                debts[spending.User.Id-1].Value += spending.Value - spending.UserShare;
+                foreach (var spending in movements.Where(m => m.User.Id == user.Id))
+                {
+                    if (spending.User.Id == 1)
+                    {
+                        debts[1].Value += spending.Value - spending.UserShare;
+                    }
+
+                    if (spending.User.Id == 2)
+                    {
+                        debts[0].Value += spending.Value - spending.UserShare;
+                    }
+                }
             }
 
             result.Results = debts;
@@ -149,30 +155,12 @@ public class MovementService : IMovementService
 
                 // insert user
                 userMovements[it] = newUser;
-                it++;
-            }
 
-            // in case there are no movements: return users without movements
-            if (!movements.Any())
-            {
-                result.Results.Add(userMovements[0]);
-                result.Results.Add(userMovements[1]);
-                return result;
-            }
-
-            foreach (Movement movement in movements)
-            {
-                switch (movement.User.Id)
+                foreach (Movement movement in movements.Where(m => m.User.Id == user.Id))
                 {
-                    case 1:
-                        userMovements[0].Movements.Add(movement);
-                        break;
-                    case 2:
-                        userMovements[1].Movements.Add(movement);
-                        break;
-                    default:
-                        break;
+                    userMovements[user.Id-1].Movements.Add(movement);
                 }
+                it++;
             }
 
             result.Results.Add(userMovements[0]);
@@ -202,12 +190,10 @@ public class MovementService : IMovementService
             else
                 movementToUpdate.Description = inputMovement.Description;
 
-
             if (inputMovement.Value == 0)
                 movementToUpdate.Value = movementToUpdate.Value;
             else
                 movementToUpdate.Value = inputMovement.Value;
-
 
             if (inputMovement.UserShare == 0)
                 movementToUpdate.UserShare = movementToUpdate.UserShare;

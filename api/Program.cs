@@ -2,6 +2,16 @@ using Api.GraphQL.Shcema;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// development cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "dev",
+                      policy  =>
+                      {
+                          policy.AllowAnyHeader().WithOrigins("http://localhost:3000");
+                      });
+});
+
 // Add services to the container.
 builder.Services.AddControllers();
 
@@ -39,9 +49,11 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseCors("dev");
+
 app.UseRouting();
 
-app.UseMiddleware<ApiKeyMiddleware>();
+// app.UseMiddleware<ApiKeyMiddleware>();
 
 app.UseAuthorization();
 
