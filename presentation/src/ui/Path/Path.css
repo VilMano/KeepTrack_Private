@@ -1,0 +1,17 @@
+
+
+
+h1 {
+    font-size: 2rem;
+    color: rgba(182, 182, 182, 0.897);
+
+}
+
+.bullet {
+    width: .7rem;
+    height: .7rem;
+    border-radius: 50%;
+    opacity: .3;
+    background-color: rgba(160, 160, 160, 0.897);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
