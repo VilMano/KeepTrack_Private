@@ -6,7 +6,7 @@ input{
     font-size: 1rem;
 
     border: 2px solid rgba(31, 29, 29, 0.884);
-    border-radius: 5px;
+    border-radius: .4rem;
     background-color: rgba(56, 56, 56, 0.712);
 
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -17,7 +17,7 @@ input{
 label {
     padding: .5rem 0;
     color: rgba(160, 160, 160, 0.897);
-    font-size: 1.5rem;
+    font-size: 1rem;
 }
 
 input:focus-visible {

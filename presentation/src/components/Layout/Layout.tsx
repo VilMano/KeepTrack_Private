@@ -17,9 +17,7 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
 
     return (
         <ApolloProvider client={client}>
-            <div className='container'>
-                {props.children}
-            </div>
+            {props.children}
         </ApolloProvider>
     );
 }

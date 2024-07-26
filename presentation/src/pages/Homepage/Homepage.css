@@ -1,3 +1,11 @@
+:root{
+    --dark-grey: #292929;
+    --neutral-grey: #6b6b6bb6;
+    --light-grey: #b6b6b6e5;
+
+    
+}
+
 * {
     font-size: 18px;
 
@@ -9,13 +17,15 @@
 }
 
 .container {
-    background-color: rgb(41, 41, 41);
+    background-color: #292929;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
     padding: 2rem 0;
+
+    gap: 3rem;
 }
 
 .row{

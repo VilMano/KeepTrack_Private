@@ -1,15 +1,21 @@
 import { Colours } from '../../models/Colours';
-import './Cards.css';
+import './Card.css';
 
 interface Props {
-    children: React.ReactNode;
-    color: Colours;
+    colour: Colours;
+    text: String;
+    label: String;
 }
 
 export const Card = (props: Props) => {
     return (
-        <div className={`card ${props.color}`}>
-            {props.children}
+        <div className={`card ${props.colour}`}>
+            <h1 className="total-user-month">
+                {props.text}
+            </h1>
+            <label className="user-name">
+                {props.label}
+            </label>
         </div>
     );
 } 
