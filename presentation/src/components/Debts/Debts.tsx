@@ -30,14 +30,14 @@ export const Debts = () => {
   var amount = 0;
   var reciever = "";
 
-  if(debts){
-    if(debts[0].value > debts[1].value){
+  if (debts) {
+    if (debts[0].value > debts[1].value) {
       sender = debts[0].userName;
       amount = debts[0].value - debts[1].value;
       reciever = debts[1].userName;
     }
 
-    if(debts[1].value > debts[0].value){
+    if (debts[1].value > debts[0].value) {
       sender = debts[1].userName;
       amount = debts[1].value - debts[0].value;
       reciever = debts[0].userName;
@@ -46,11 +46,12 @@ export const Debts = () => {
 
   return (
     <>
-      {debts && debts.map((debt: IDebt) => {
-        return (<Debt debt={debt}></Debt>)
-      })}
-
-      <p>{sender} owes {reciever}: {amount}€</p>
+      <div style={{ paddingTop: "4rem"}} className="row">
+        {debts && debts.map((debt: IDebt) => {
+          const positive = debt.userName.toLowerCase() == sender.toLowerCase();
+          return (<Debt positive={positive} transfer={amount} debt={debt}></Debt>)
+        })}
+      </div>
     </>
   );
 }

@@ -1,0 +1,20 @@
+.row{
+    display: flex;
+    width: 100%;
+    padding: 0 1rem;
+
+    gap:1rem;
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
+}
+
+.row-center{
+    justify-content: center;
+}
+
+.column-center{
+    align-items: center;
+}

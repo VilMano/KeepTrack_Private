@@ -1,0 +1,62 @@
+:root{
+    --dark-grey: #292929;
+    --neutral-grey: #6b6b6bb6;
+    --light-grey: #b6b6b6e5;
+
+    
+}
+
+* {
+    font-size: 18px;
+
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    background-color: rgb(41, 41, 41);
+
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #292929;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 1rem;
+
+    padding: 2rem 0;
+}
+
+.g-3{
+    gap: 3rem;
+}
+
+.row{
+    display: flex;
+    width: 100%;
+    padding: 0 1rem;
+
+    gap:1rem;
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
+}
+
+.row-center{
+    justify-content: center;
+}
+
+.column-center{
+    align-items: center;
+}
+
+
+
+/* ########################################### */
+
+.p-tb-2{
+    padding: 2rem 0;
+}

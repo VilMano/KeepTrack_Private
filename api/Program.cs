@@ -5,11 +5,13 @@ var builder = WebApplication.CreateBuilder(args);
 // development cors
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: "dev",
-                      policy  =>
-                      {
-                          policy.AllowAnyHeader().WithOrigins("http://localhost:3000");
-                      });
+    options.AddPolicy(
+        name: "dev",
+        policy =>
+        {
+            policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+        }
+    );
 });
 
 // Add services to the container.
@@ -49,7 +51,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseCors("dev");
 
 app.UseRouting();
 
@@ -61,4 +62,5 @@ app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Inde
 
 app.MapGraphQL();
 
+app.UseCors("dev");
 app.Run();

@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { Layout } from './components/Layout/Layout';
-import Debts from './components/Debts/Debts';
-import UserMovements from './components/Movements/UserMovements';
+
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { HomePage } from './pages/Homepage/Homepage';
+import { Insert } from './pages/Insert/Insert';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,8 +14,14 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Layout>
-      <Debts></Debts>
-      <UserMovements></UserMovements>
+      <Router>
+        <></>
+        {/* Router paths | TO DO: ADD PAGES */}
+        <Routes>
+          <Route path='/' Component={HomePage} />
+          <Route path='/create' Component={Insert} />
+        </Routes>
+      </Router>
     </Layout>
   </React.StrictMode>
 );

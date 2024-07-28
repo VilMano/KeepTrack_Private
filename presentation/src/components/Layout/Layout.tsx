@@ -8,7 +8,7 @@ interface Props {
 
 export const Layout: React.FunctionComponent<Props> = (props: Props) => {
     const client = new ApolloClient({
-        uri: 'http://localhost:5126/graphql',
+        uri: 'http://192.168.1.130:5126/graphql',
         cache: new InMemoryCache(),
         headers: {
             "X-API-Key": process.env.REACT_APP_API_KEY!
@@ -17,9 +17,7 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
 
     return (
         <ApolloProvider client={client}>
-            <div className='container'>
-                {props.children}
-            </div>
+            {props.children}
         </ApolloProvider>
     );
 }
