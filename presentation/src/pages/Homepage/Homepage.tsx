@@ -16,6 +16,8 @@ export const HomePage = () => {
     let date = new Date();
     let month = date.getMonth();
 
+    const [total, setTotal] = useState(0);
+
     const [debts, setDebts] = useState<IDebt[]>();
     const { loading, error, data, refetch } = useQuery(GET_MONTHLY_DEBTS_BY_USER, {
         variables: {
@@ -26,7 +28,13 @@ export const HomePage = () => {
     useEffect(() => {
         const getDebts = async () => {
             let d = await refetch();
+            var totalValue = 0;
             setDebts(d.data.monthlyDebtByUser)
+            d.data.monthlyDebtByUser.forEach((debt: IDebt) => {
+                totalValue += debt.value;
+            });
+
+            setTotal(totalValue);
         }
 
         getDebts();
@@ -36,10 +44,11 @@ export const HomePage = () => {
     return (
         <Fragment>
             <div style={{ paddingTop: "8rem" }} className="container">
-                {/* <Path path={'Home'}></Path> */}
-                <MonthTotal total={607.11} month={7}></MonthTotal>
+                <MonthTotal total={total} month={7}></MonthTotal>
                 <Debts></Debts>
-                <UserMovements></UserMovements>
+                <div style={{ overflow: "scroll", height: "50vh", width: "100%" }} className='scrollable'>
+                    <UserMovements></UserMovements>
+                </div>
             </div>
         </Fragment>);
 };

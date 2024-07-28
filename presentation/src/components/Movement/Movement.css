@@ -1,0 +1,35 @@
+.movement{
+    width: 100%;
+
+    border-radius: 5px;
+    color: rgba(182, 182, 182, 0.897);
+    display: flex;
+    padding: 1rem;
+    border: 1px solid rgba(31, 29, 29, 0.884);
+    justify-content: space-between;
+
+    align-items: center;
+
+    font-size: 1rem;
+}
+
+.description {
+    font-size: 1.1rem;
+}
+
+.username{
+    font-size: .9rem;
+}
+
+.value{
+    font-size: 1rem;
+}
+
+.date{
+    font-size: .8rem;
+}
+
+.description, .username, .value, .date{
+    margin: 0;
+    padding: 0;
+}

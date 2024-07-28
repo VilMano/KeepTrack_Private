@@ -25,3 +25,18 @@
     font-size: .7rem;
     color: var(--neutral-grey);
 }
+
+.personal-debt{
+    color: rgba(175, 44, 44, 0.719);
+}
+
+.personal-debt-pos{
+    color: rgba(57, 182, 78, 0.719);
+}
+
+.personal-debt{
+    margin: 0;
+    padding: 0;
+    
+    font-size: .8rem;
+}

@@ -12,6 +12,8 @@ input{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     transition: .5s ease-in-out;
 
+    text-align: center;
+    color: var(--neutral-grey);
 }
 
 label {
@@ -27,4 +29,28 @@ input:focus-visible {
 
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     transition: .5s ease-in-out;
+}
+
+.option{
+    width: 98%;
+
+    border-bottom: 1px solid rgba(31, 29, 29, 0.884);
+    border-radius: 5px;
+
+    text-align: center;
+    display: flex;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(56, 56, 56, 0.712);
+    color: rgba(182, 182, 182, 0.897);
+}
+
+.option:hover{
+    opacity: .2;
+}
+
+.hidden{
+    display: none!important;
 }

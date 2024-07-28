@@ -46,13 +46,12 @@ export const Debts = () => {
 
   return (
     <>
-      <div className="row">
+      <div style={{ paddingTop: "4rem"}} className="row">
         {debts && debts.map((debt: IDebt) => {
-          return (<Debt debt={debt}></Debt>)
+          const positive = debt.userName.toLowerCase() == sender.toLowerCase();
+          return (<Debt positive={positive} transfer={amount} debt={debt}></Debt>)
         })}
       </div>
-
-      <p>{sender} owes {reciever}: {amount}€</p>
     </>
   );
 }

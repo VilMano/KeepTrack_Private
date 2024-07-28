@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { IUser } from "../../models/IUser";
+import Movement from "../Movement/Movement";
+import { IMovement } from "../../models/IMovement";
 
 interface Props {
     userMovements: IUser;
@@ -12,13 +14,12 @@ export const MovementsList = (props: Props) => {
     }, []);
 
     return (<>
-        <p>{props.userMovements.name}</p>
         {movements &&
-            movements.map((movement) => {
+            movements.map((movement: IMovement) => {
                 return (<>
-                <p>{movement.description}</p>
-                <p>{movement.value}</p>
-                <p>{movement.userShare}</p>
+                    <div className="row">
+                        <Movement userName={props.userMovements.name} movement={movement}></Movement>
+                    </div>
                 </>)
             })}
     </>);
