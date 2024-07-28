@@ -21,8 +21,9 @@ builder.Services.AddTransient<IApiKeyValidation, ApiKeyValidation>();
 
 builder.Services.AddDbContext<ExpensesContext>();
 
-// repositories
+#region DI
 builder
+    // repositories
     .Services.AddScoped<IUserRepository, UserRepository>()
     .AddScoped<IMovementRepository, MovementRepository>()
     // services
@@ -30,7 +31,7 @@ builder
     .AddScoped<IUserService, UserService>()
     .AddScoped<MovementService>()
     .AddScoped<UserService>();
-
+#endregion
 builder
     .Services.AddGraphQLServer()
     .AddType<User>()
@@ -39,6 +40,8 @@ builder
     .AddQueryType<Query>();
 
 var app = builder.Build();
+
+app.MapIdentityApi<User>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -51,16 +54,17 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-
 app.UseRouting();
 
 // app.UseMiddleware<ApiKeyMiddleware>();
 
 app.UseAuthorization();
 
+builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<ExpensesContext>();
+
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapGraphQL();
+app.MapGraphQL().RequireAuthorization();
 
 app.UseCors("dev");
 app.Run();
