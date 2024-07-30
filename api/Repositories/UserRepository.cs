@@ -59,7 +59,7 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public async Task<User> User(int id)
+    public async Task<User> User(string id)
     {
         try
         {

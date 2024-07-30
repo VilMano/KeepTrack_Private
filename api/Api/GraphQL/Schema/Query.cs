@@ -1,12 +1,10 @@
+
 namespace Api.GraphQL.Shcema
 {
     public class Query : IQuery
     {
-        private readonly IApiKeyValidation _apiKeyValidation;
-
-        public Query(IApiKeyValidation apiKeyValidation)
+        public Query()
         {
-            _apiKeyValidation = apiKeyValidation;
         }
 
         #region MOVEMENTS
@@ -66,7 +64,8 @@ namespace Api.GraphQL.Shcema
         /// </summary>
         /// <param name="id">Id of the requested user</param>
         /// <returns>Task<User></returns>
-        public async Task<User> GetUser(int id, [Service] UserService service)
+        [HotChocolate.Authorization.Authorize]
+        public async Task<User> GetUser(string id, [Service] UserService service)
         {
             ResultWrapper<User> user = await service.FetchUser(id);
 

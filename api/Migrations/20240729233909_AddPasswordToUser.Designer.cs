@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Expenses.Migrations
 {
     [DbContext(typeof(ExpensesContext))]
-    partial class ExpensesContextModelSnapshot : ModelSnapshot
+    [Migration("20240729233909_AddPasswordToUser")]
+    partial class AddPasswordToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.7");
@@ -183,6 +186,7 @@ namespace Expenses.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<float>("UserShare")
@@ -325,7 +329,9 @@ namespace Expenses.Migrations
                 {
                     b.HasOne("User", "User")
                         .WithMany("Movements")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

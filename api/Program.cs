@@ -1,6 +1,13 @@
+using System.Text;
 using Api.GraphQL.Shcema;
+using DotNet8WebAPI.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ExpensesContext>();
 
 // development cors
 builder.Services.AddCors(options =>
@@ -14,12 +21,37 @@ builder.Services.AddCors(options =>
     );
 });
 
+var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secretsecretsecret"));
+
+builder
+    .Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            ValidateIssuerSigningKey = false,
+            ValidAudience = "audience",
+            ValidIssuer = "issuer",
+            RequireSignedTokens = false,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes("secretsecretsecretsecretsecretsecret")
+            )
+        };
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+    });
+
+builder.Services.AddAuthorization();
+
 // Add services to the container.
 builder.Services.AddControllers();
-
-builder.Services.AddTransient<IApiKeyValidation, ApiKeyValidation>();
-
-builder.Services.AddDbContext<ExpensesContext>();
 
 #region DI
 builder
@@ -32,8 +64,12 @@ builder
     .AddScoped<MovementService>()
     .AddScoped<UserService>();
 #endregion
+
+builder.Services.AddHttpContextAccessor();
+
 builder
     .Services.AddGraphQLServer()
+    .AddAuthorization()
     .AddType<User>()
     .AddType<Movement>()
     .AddMutationType<Mutation>()
@@ -41,30 +77,35 @@ builder
 
 var app = builder.Build();
 
-app.MapIdentityApi<User>();
+app.UseCors("dev");
+
+// app.MapIdentityApi<User>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    // app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+IdentityModelEventSource.ShowPII = true;
+
+// app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
-// app.UseMiddleware<ApiKeyMiddleware>();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
-builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<ExpensesContext>();
+app.UseMiddleware<JwtMiddleware>();
 
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapGraphQL().RequireAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGraphQL();
+});
 
-app.UseCors("dev");
 app.Run();
