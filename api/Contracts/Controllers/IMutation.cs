@@ -10,5 +10,5 @@ public interface IMutation
 
     public Task<User> UpdateUser(User user, [Service] UserService service);
 
-    public Task<bool> DeleteUser(int id, [Service] UserService service);
+    public Task<bool> DeleteUser(string id, [Service] UserService service);
 }

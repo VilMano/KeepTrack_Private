@@ -84,7 +84,7 @@ public class MovementService : IMovementService
                 m.CreatedOn.Month == month && m.CreatedOn.Year == DateTime.UtcNow.Year
             );
 
-            List<User> users = await _userRepository.Users(u => u.Id != 0);
+            List<User> users = await _userRepository.Users(u => u.Id != "");
 
             List<Debt> debts = new List<Debt>();
 
@@ -104,15 +104,7 @@ public class MovementService : IMovementService
 
                 foreach (var spending in movements.Where(m => m.User.Id == user.Id))
                 {
-                    if (spending.User.Id == 1)
-                    {
-                        debts[1].Value += spending.Value - spending.UserShare;
-                    }
-
-                    if (spending.User.Id == 2)
-                    {
-                        debts[0].Value += spending.Value - spending.UserShare;
-                    }
+                    debts[it].Value += spending.Value - spending.UserShare;
                 }
             }
 
@@ -138,7 +130,7 @@ public class MovementService : IMovementService
                 m.CreatedOn.Month == month && m.CreatedOn.Year == DateTime.UtcNow.Year
             );
 
-            List<User> users = await _userRepository.Users(u => u.Id != 0);
+            List<User> users = await _userRepository.Users(u => u.Id != "");
             List<User> userMovements = new List<User>();
             int it = 0;
 
@@ -158,8 +150,9 @@ public class MovementService : IMovementService
 
                 foreach (Movement movement in movements.Where(m => m.User.Id == user.Id))
                 {
-                    userMovements[user.Id-1].Movements.Add(movement);
+                    userMovements[it].Movements.Add(movement);
                 }
+
                 it++;
             }
 

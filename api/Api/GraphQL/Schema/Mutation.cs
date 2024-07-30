@@ -63,7 +63,7 @@ namespace Api.GraphQL.Shcema
         /// <param name="id">Id of the user to delete</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<bool> DeleteUser(int id, [Service] UserService service)
+        public async Task<bool> DeleteUser(string id, [Service] UserService service)
         {
             ResultWrapper<bool> deleted = await service.DeleteUser(id);
 

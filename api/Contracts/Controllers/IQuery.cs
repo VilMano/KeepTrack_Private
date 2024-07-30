@@ -19,5 +19,5 @@ public interface IQuery
     /// </summary>
     /// <param name="id">Id of the requested user</param>
     /// <returns>Task<User></returns>
-    public Task<User> GetUser(int id, [Service] UserService service);
+    public Task<User> GetUser(string id, [Service] UserService service);
 }
