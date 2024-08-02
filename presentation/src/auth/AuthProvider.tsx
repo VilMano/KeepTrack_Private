@@ -2,7 +2,7 @@ import { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
 
 import { UserContext } from './UserContext';
 import { setSession, isValidToken, getSession } from './utils';
-import { AuthUserType, ActionMapType, AuthStateType } from './types';
+import { ActionMapType, AuthStateType } from './types';
 import axios from 'axios';
 import { Console } from 'console';
 
@@ -17,13 +17,13 @@ enum Types {
 
 type Payload = {
     [Types.INITIAL]: {
-        user: AuthUserType;
+        user: AuthStateType;
     };
     [Types.LOGIN]: {
-        user: AuthUserType;
+        user: AuthStateType;
     };
     [Types.REGISTER]: {
-        user: AuthUserType;
+        user: AuthStateType;
     };
     [Types.RESETPASSWORD]: {
         user: undefined;
@@ -68,6 +68,7 @@ type Props = {
 
 export function AuthProvider({ children }: Props) {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const [test, setTest] = useState({});
 
     const initialize = useCallback(async () => {
         try {
@@ -82,12 +83,13 @@ export function AuthProvider({ children }: Props) {
             });
             const user = userFetched.data;
 
+            
             dispatch({
                 type: Types.INITIAL,
                 payload: {
                     user: {
-                        user: user,
-                        token: token
+                        user,
+                        token: token!
                     },
                 },
             });
@@ -99,7 +101,9 @@ export function AuthProvider({ children }: Props) {
             dispatch({
                 type: Types.INITIAL,
                 payload: {
-                    user: null,
+                    user: {
+                        user: null!,
+                    }
                 },
             });
         }
@@ -135,13 +139,22 @@ export function AuthProvider({ children }: Props) {
 
                 setSession(token);
 
+                setTest({
+                    user: {
+                        user,
+                        token: token!
+                    }
+                });
+    
+                console.log(test)
+
                 dispatch({
                     type: Types.LOGIN,
                     payload: {
                         user: {
                             user: user,
                             token: token
-                        },
+                        }
                     },
                 });
                 console.log("data inserted #2: ", state)
@@ -216,8 +229,16 @@ export function AuthProvider({ children }: Props) {
     }, [dispatch]);
 
     useEffect(() => {
+        console.log(state);
+
+
         setCheckAuthenticated(state.user ? 'authenticated' : 'unauthenticated');
-    }, [state.user]);
+    }, [state]);
+
+    useEffect(() => {
+        // console.log(test);
+        
+    }, [test]);
 
     // CONFIRMEMAIL
     const confirmRegister = useCallback(async (email: string, token: string) => {
@@ -237,7 +258,7 @@ export function AuthProvider({ children }: Props) {
 
     const memoizedValue = useMemo(
         () => ({
-            user: state.user,
+            user: state,
             method: 'jwt',
             authenticated: state.user != null,
             login,

@@ -11,7 +11,6 @@ export type ActionMapType<M extends { [index: string]: any }> = {
       };
 };
 
-export type AuthUserType = null | Record<string, any>;
 export type AuthStateType = {
   user: IUser;
   token?: string;
@@ -19,7 +18,7 @@ export type AuthStateType = {
 
 
 export type JWTContextType = {
-  user: AuthUserType;
+  user: AuthStateType;
   method: string;
   authenticated: boolean;
   login: (userName: string, password: string) => Promise<void>;
