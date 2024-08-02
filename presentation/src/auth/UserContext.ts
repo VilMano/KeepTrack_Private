@@ -1,5 +1,4 @@
 import { createContext } from "react";
-import { IUserAuth } from "../models/IUserAuth";
-import { UserAuth } from "../models/UserAuth";
+import { JWTContextType } from './types';
 
-export const UserContext = createContext<IUserAuth>(new UserAuth());
+export const UserContext = createContext({} as JWTContextType);

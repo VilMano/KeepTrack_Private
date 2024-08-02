@@ -6,6 +6,8 @@ interface Props {
     label: String;
     type: InputType;
     categories?: String[];
+    defaultValue?: any;
+    setDefaultValue: Function;
 }
 
 export const Input = (props: Props) => {
@@ -73,7 +75,7 @@ export const Input = (props: Props) => {
     return (<>
         <div style={{ width: "100%"}} className="column">
             <label>{props.label}</label>
-            <input type={props.type.toString()} />
+            <input type={props.type.toString()} value={props.defaultValue} onChange={(e) => { props.setDefaultValue(e.target.value)}}/>
         </div>
     </>);
 }

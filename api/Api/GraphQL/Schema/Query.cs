@@ -1,11 +1,9 @@
-
 namespace Api.GraphQL.Shcema
 {
+    [HotChocolate.Authorization.Authorize]
     public class Query : IQuery
     {
-        public Query()
-        {
-        }
+        public Query() { }
 
         #region MOVEMENTS
 
@@ -18,7 +16,7 @@ namespace Api.GraphQL.Shcema
         {
             ResultWrapper<Movement> movement = await service.FetchMovement(id);
 
-            if(movement.Successful)
+            if (movement.Successful)
                 return movement.Results.FirstOrDefault();
 
             return null;
@@ -29,14 +27,17 @@ namespace Api.GraphQL.Shcema
         /// </summary>
         /// <param name="month">Input from 0 - 11</param>
         /// <returns>Task<List<Movement>></returns>
-        public async Task<List<Debt>> GetMonthlyDebtByUser(int month, [Service] MovementService service)
+        public async Task<List<Debt>> GetMonthlyDebtByUser(
+            int month,
+            [Service] MovementService service
+        )
         {
-            ResultWrapper<List<Debt>> movements =  new ResultWrapper<List<Debt>>();
-            
+            ResultWrapper<List<Debt>> movements = new ResultWrapper<List<Debt>>();
+
             var totalExpensesByUser = await service.GetMonthlyDebtsByUser(month);
-            if(totalExpensesByUser.Successful)
+            if (totalExpensesByUser.Successful)
                 return totalExpensesByUser.Results.ToList();
-            
+
             return null;
         }
 
@@ -45,14 +46,17 @@ namespace Api.GraphQL.Shcema
         /// </summary>
         /// <param name="month">Input from 0 - 11</param>
         /// <returns>Task<List<Movement>></returns>
-        public async Task<List<User>> GetMonthlyMovementsByUser(int month, [Service] MovementService service)
+        public async Task<List<User>> GetMonthlyMovementsByUser(
+            int month,
+            [Service] MovementService service
+        )
         {
-            ResultWrapper<List<User>> users =  new ResultWrapper<List<User>>();
-            
+            ResultWrapper<List<User>> users = new ResultWrapper<List<User>>();
+
             var totalExpensesByUser = await service.GetMonthlyMovementsByUser(month);
-            if(totalExpensesByUser.Successful)
+            if (totalExpensesByUser.Successful)
                 return totalExpensesByUser.Results.ToList();
-            
+
             return null;
         }
         #endregion
@@ -69,7 +73,7 @@ namespace Api.GraphQL.Shcema
         {
             ResultWrapper<User> user = await service.FetchUser(id);
 
-            if(user.Successful)
+            if (user.Successful)
                 return user.Results.FirstOrDefault();
 
             return null;
@@ -77,9 +81,10 @@ namespace Api.GraphQL.Shcema
         #endregion
     }
 
-    class InputUser{
-        public int Id {get; set;}
-        public string Name { get; set;}
+    class InputUser
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
         public List<Movement> Movements { get; set; } = new List<Movement>();
     }
 }

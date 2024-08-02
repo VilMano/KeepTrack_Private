@@ -16,7 +16,7 @@ public class UserController : ControllerBase
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate(string username, string password)
     {
-        var model = new AuthenticateRequest{ Username = username, Password = password };
+        var model = new AuthenticateRequest { Username = username, Password = password };
         var response = await _userService.Authenticate(model);
 
         if (response == null)
@@ -26,9 +26,12 @@ public class UserController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("test")]
-    public async Task<int> Test()
+    [HttpGet("user/{id}")]
+    public async Task<User> GetUser(string id)
     {
-        return 1;
+        ResultWrapper<User> user = await _userService.FetchUser(id);
+
+        return user.Results.FirstOrDefault();
+
     }
 }

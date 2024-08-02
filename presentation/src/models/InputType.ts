@@ -2,5 +2,6 @@ export enum InputType{
     text = "text",
     number = "number",
     select = "select",
-    date = "date"
+    date = "date",
+    password = "password"
 }
