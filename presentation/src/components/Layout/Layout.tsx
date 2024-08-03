@@ -15,14 +15,14 @@ interface Props {
 export const Layout: React.FunctionComponent<Props> = (props: Props) => {
     const auth = useContext(UserContext);
 
-    //  (auth)
+    
 
     const client = new ApolloClient({
-        uri: 'http://192.168.1.130:5126/graphql',
+        uri: 'http://192.168.1.107:5126/graphql',
         cache: new InMemoryCache(),
-        // headers: {
-        //     "Authorization": `Bearer ${auth.user?.token}`
-        // }
+        headers: {
+            "Authorization": `Bearer ${window.sessionStorage.getItem('accessToken') ?? ""}`
+        }
     });
 
     return (

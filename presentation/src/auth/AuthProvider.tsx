@@ -1,10 +1,9 @@
 import { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
 
 import { UserContext } from './UserContext';
-import { setSession, isValidToken, getSession } from './utils';
+import { setSession, isValidToken, getSession, setLocalStorage } from './utils';
 import { ActionMapType, AuthStateType } from './types';
 import axios from 'axios';
-import { Console } from 'console';
 
 enum Types {
     INITIAL = 'INITIAL',
@@ -43,21 +42,6 @@ const initialState: AuthStateType = {
     token: "",
 };
 
-const reducer = (state: AuthStateType, action: ActionsType) => {
-    if (action.type === Types.INITIAL) {
-        return {
-            ...state
-        };
-    }
-    if (action.type === Types.LOGIN) {
-        return {
-            ...state
-        };
-    }
-
-    return state;
-};
-
 // ----------------------------------------------------------------------
 
 const STORAGE_KEY = 'accessToken';
@@ -67,45 +51,33 @@ type Props = {
 };
 
 export function AuthProvider({ children }: Props) {
-    const [state, dispatch] = useReducer(reducer, initialState);
-    const [test, setTest] = useState({});
+    const [state, dispatch] = useState<AuthStateType>();
+    const [ returnUrl, setReturnUrl ] = useState<string>('/');
 
     const initialize = useCallback(async () => {
         try {
-            const token = window.sessionStorage.getItem('accessToken');
-            const claims = getSession('accessToken');
+            const token = window.sessionStorage.getItem('accessToken')!;
+            if (token.length > 0) {
+                const claims = getSession(token!);
 
-            // fetch all info for the logged in user
-            const userFetched = await axios.get(process.env.REACT_APP_AUTH + `/user/user/${claims.id!}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            });
-            const user = userFetched.data;
+                // fetch all info for the logged in user
+                const userFetched = await axios.get(process.env.REACT_APP_AUTH + `/user/user/${claims.id!}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                });
 
-            
-            dispatch({
-                type: Types.INITIAL,
-                payload: {
-                    user: {
-                        user,
-                        token: token!
-                    },
-                },
-            });
+                const user = userFetched.data;
+                dispatch({
+                    user,
+                    token
+                });
+            }
+
         } catch (error) {
             console.log("error: ", error)
             if (window.location.href != "http://localhost:3000/login")
                 window.location.href = "http://localhost:3000/login"
-
-            dispatch({
-                type: Types.INITIAL,
-                payload: {
-                    user: {
-                        user: null!,
-                    }
-                },
-            });
         }
     }, []);
 
@@ -128,36 +100,29 @@ export function AuthProvider({ children }: Props) {
                 });
 
 
-                const { token, id } = res.data;
-                // fetch all info for logged in user
-                const userFetched = await axios.get(process.env.REACT_APP_AUTH + `/user/user/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    }
-                });
-                const user = userFetched.data;
+                const { token } = res.data;
+                if (token.length > 0) {
+                    // get user claims
+                    const claims = getSession(token!);
 
-                setSession(token);
+                    // fetch all info for logged in user
+                    const userFetched = await axios.get(process.env.REACT_APP_AUTH + `/user/user/${claims.id}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        }
+                    });
+                    const user = userFetched.data;
 
-                setTest({
-                    user: {
+
+                    setSession(token);
+                    setLocalStorage('login', JSON.stringify({ id: user.id, name: user.name}));
+
+                    dispatch({
                         user,
                         token: token!
-                    }
-                });
-    
-                console.log(test)
+                    });
 
-                dispatch({
-                    type: Types.LOGIN,
-                    payload: {
-                        user: {
-                            user: user,
-                            token: token
-                        }
-                    },
-                });
-                console.log("data inserted #2: ", state)
+                }
             } catch (error) {
                 console.log("##### ERROR #2: ", error);
             }
@@ -166,109 +131,26 @@ export function AuthProvider({ children }: Props) {
         [dispatch]
     );
 
-    // REGISTER
-    const register = useCallback(async (name: string, email: string, password: string) => {
-        //     const data = new FormData();
-        //     data.append('name', name);
-        //     data.append('email', email);
-        //     data.append('password', password);
-
-        //     const res = await axios.post(endpoints.auth.register, data);
-
-        //     const { accessToken, user } = res.data;
-        //     sessionStorage.setItem(STORAGE_KEY, accessToken);
-
-        //     // dispatch({
-        //     //   type: Types.REGISTER,
-        //     //   payload: {
-        //     //     user: {
-        //     //       ...user,
-        //     //       accessToken,
-        //     //     },
-        //     //   },
-        //     // });
-        //   }, []);
-
-        //   // RESETPASSWORD
-        //   const resetPassword = useCallback(async (email: string, token: string, password: string) => {
-        //     const data = new FormData();
-        //     data.append('email', email);
-        //     data.append('token', token);
-        //     data.append('password', password);
-        //     const res = await axios.post(endpoints.auth.resetPassword, data);
-
-        //     dispatch({
-        //       type: Types.RESETPASSWORD,
-        //       payload: {
-        //         user: undefined,
-        //       },
-        //     });
-    }, []);
-
-    // RESETPASSWORD
-    const recoverPassword = useCallback(async (email: string) => {
-        // const data = new FormData();
-        // data.append('email', email);
-        // const res = await axios.post(endpoints.auth.recoverPassword, data);
-
-        // dispatch({
-        //   type: Types.RECOVERPASSWORD,
-        //   payload: {
-        //     user: undefined,
-        //   },
-        // });
-    }, []);
-
     // LOGOUT
     const logout = useCallback(async () => {
-        // setSession(null);
-        // dispatch({
-        //   type: Types.LOGOUT,
-        // });
-        // setCheckAuthenticated('unauthenticated');
+        setSession(null);
+
+        dispatch({
+            user: null!,
+            token: ""
+        });
     }, [dispatch]);
-
-    useEffect(() => {
-        console.log(state);
-
-
-        setCheckAuthenticated(state.user ? 'authenticated' : 'unauthenticated');
-    }, [state]);
-
-    useEffect(() => {
-        // console.log(test);
-        
-    }, [test]);
-
-    // CONFIRMEMAIL
-    const confirmRegister = useCallback(async (email: string, token: string) => {
-        // const data = new FormData();
-        // data.append('email', email);
-        // data.append('token', token);
-
-        // const res = await axios.post(endpoints.auth.confirmEmail, data);
-
-        // dispatch({
-        //   type: Types.RECOVERPASSWORD,
-        //   payload: {
-        //     user: undefined,
-        //   },
-        // });
-    }, []);
 
     const memoizedValue = useMemo(
         () => ({
-            user: state,
+            user: state!,
             method: 'jwt',
-            authenticated: state.user != null,
+            authenticated: state?.user != null,
             login,
-            register,
-            recoverPassword,
-            confirmRegister,
             logout,
         }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [login, logout, state.user]
+        [login, logout, state]
     );
 
     return <UserContext.Provider value={memoizedValue}>{children}</UserContext.Provider>;

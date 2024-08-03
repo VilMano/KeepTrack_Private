@@ -15,14 +15,14 @@ function jwtDecode(token: string) {
   return JSON.parse(jsonPayload);
 }
 
-function decodeJWT(token: string){
+function decodeJWT(token: string) {
   var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
 
-    return JSON.parse(jsonPayload);
+  return JSON.parse(jsonPayload);
 }
 // ----------------------------------------------------------------------
 
@@ -64,22 +64,42 @@ export const tokenExpired = (exp: number) => {
 
 export const setSession = (accessToken: string | null) => {
   if (accessToken) {
+    // if (window.sessionStorage.getItem('accessToken')) {
+    //   window.sessionStorage.removeItem('accessToken');
+    // }
+
     window.sessionStorage.setItem('accessToken', accessToken);
 
     const { exp } = jwtDecode(accessToken);
     tokenExpired(exp);
   } else {
     window.sessionStorage.removeItem('accessToken');
+    window.sessionStorage.removeItem('login');
   }
 };
 
-export const getSession = (key: string | null) => {
-  if (key) {
-    const token = window.sessionStorage.getItem(key);
-    if(token){
-      const decodedJWT = decodeJWT(token!);
-  
-      return decodedJWT;
-    }
+export const getSession = (token: string) => {
+  if (token) {
+    const decodedJWT = decodeJWT(token!);
+
+    return decodedJWT;
   }
 };
+
+export const setLocalStorage = (name: string, value: string) => {
+  if (name && value) {
+    if (window.sessionStorage.getItem(name)) {
+      window.sessionStorage.removeItem(name);
+    }
+
+    window.sessionStorage.setItem(name, value);
+  }
+}
+
+export const getUserInfo = () => {
+  if(typeof window.sessionStorage.getItem('login') !== 'undefined'){
+    return JSON.parse(window.sessionStorage.getItem('login')!);
+  }
+
+  return null;
+}

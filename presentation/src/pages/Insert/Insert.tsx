@@ -4,6 +4,10 @@ import { Input } from "../../ui/Input/Input";
 import { Fragment } from "react/jsx-runtime";
 import './Insert.css';
 import { useState } from "react";
+import { getUserInfo } from "../../auth/utils";
+import { IMovement } from "../../models/IMovement";
+import { useMutation } from "@apollo/client";
+import { CREATE_MOVEMENT } from "../../api/graphql/mutations/mutation";
 
 interface Props {
 
@@ -11,12 +15,34 @@ interface Props {
 
 export const Insert = (props: Props) => {
 
+    const { id, name } = getUserInfo();
+    const [ createMovevement, { data, loading, error }] = useMutation(CREATE_MOVEMENT);
+
     const [ description, setDescription ] = useState('');
     const [ totalCost, setTotalCost ] = useState(0);
     const [ yourShare, setYourShare ] = useState(0);
     const [ dateCreated, setDateCreated ] = useState('');
     const [ category, setCategory ] = useState('');
 
+    const handleCreateMovement = () => {
+
+        createMovevement({
+            variables: {
+                movement: {
+                    description,
+                    value: totalCost,
+                    userShare: yourShare,
+                    createdOn: dateCreated,
+                    category: category,
+                    shared: true,
+                    user: {
+                        id,
+                        name
+                    }
+                }
+            }
+        })
+    }
 
     return (
         <Fragment>
@@ -35,7 +61,7 @@ export const Insert = (props: Props) => {
                     <Input type={InputType.select} label={'Category'} setDefaultValue={setCategory} categories={["Home decoration", "Power & Water", "Car", "Food"]}></Input>
                 </div>
                 <div style={{ width: "100%"}} className="row row-center">
-                    <Button onClick={() => {  ('Creating movement') }} text='Create'></Button>
+                    <Button onClick={handleCreateMovement} text='Create'></Button>
                 </div>
             </div>
         </Fragment>);
