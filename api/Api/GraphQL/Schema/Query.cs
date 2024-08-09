@@ -27,18 +27,14 @@ namespace Api.GraphQL.Shcema
         /// </summary>
         /// <param name="month">Input from 0 - 11</param>
         /// <returns>Task<List<Movement>></returns>
-        public async Task<List<Debt>> GetMonthlyDebtByUser(
+        public async Task<List<Debt>>? GetMonthlyDebtByUser(
             int month,
             [Service] MovementService service
         )
         {
-            ResultWrapper<List<Debt>> movements = new ResultWrapper<List<Debt>>();
+            ResultWrapper<Debt> totalExpensesByUser = await service.GetMonthlyDebtsByUser(month);
 
-            var totalExpensesByUser = await service.GetMonthlyDebtsByUser(month);
-            if (totalExpensesByUser.Successful)
-                return totalExpensesByUser.Results.ToList();
-
-            return null;
+            return totalExpensesByUser.Results.ToList();
         }
 
         /// <summary>
@@ -46,18 +42,26 @@ namespace Api.GraphQL.Shcema
         /// </summary>
         /// <param name="month">Input from 0 - 11</param>
         /// <returns>Task<List<Movement>></returns>
-        public async Task<List<User>> GetMonthlyMovementsByUser(
+        public async Task<List<UserDTO>>? GetMonthlyMovementsByUser(
             int month,
             [Service] MovementService service
         )
         {
-            ResultWrapper<List<User>> users = new ResultWrapper<List<User>>();
+            ResultWrapper<UserDTO> users = new ResultWrapper<UserDTO>();
+            try
+            {
+                users = await service.GetMonthlyMovementsByUser(month);
 
-            var totalExpensesByUser = await service.GetMonthlyMovementsByUser(month);
-            if (totalExpensesByUser.Successful)
-                return totalExpensesByUser.Results.ToList();
+                if (users.Successful)
+                    return users.Results.ToList();
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
 
-            return null;
+            return users.Results.ToList();
         }
         #endregion
 

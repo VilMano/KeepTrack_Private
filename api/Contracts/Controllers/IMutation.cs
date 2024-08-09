@@ -1,6 +1,10 @@
 public interface IMutation
 {
-    public Task<Movement> CreateMovement(Movement movement, [Service] MovementService service);
+    public Task<Movement> CreateMovement(
+        MovementDTO movement,
+        [Service] MovementService service,
+        [Service] UserService userService
+    );
 
     public Task<Movement> UpdateMovement(Movement movement, [Service] MovementService service);
 

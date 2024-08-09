@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using Api.GraphQL.Shcema;
 using DotNet8WebAPI.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -51,7 +52,8 @@ builder
 builder.Services.AddAuthorization();
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x =>
+   x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);;
 
 #region DI
 builder

@@ -3,15 +3,16 @@ import { IDebt } from "../../models/Debt"
 import { Card } from "../../ui/Card/Card";
 
 interface Props {
-    debt: IDebt;
-    transfer: number;
+    totalUserAmount: number;
+    username: string;
     positive: boolean;
+    debt: number;
 }
 
 export function Debt(props: Props) {
     return (
         <>
-            <Card pos={props.positive} middleLabel={props.transfer} label={props.debt.userName} text={`${props.debt.value}€`} colour={Colours.neutral}></Card>
+            <Card pos={props.positive} middleLabel={props.debt} label={props.username} text={`${props.totalUserAmount}€`} colour={Colours.neutral}></Card>
         </>
     )
 }

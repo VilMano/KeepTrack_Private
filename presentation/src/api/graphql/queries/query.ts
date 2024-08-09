@@ -12,12 +12,17 @@ query GetMonthlyDebtByUser($month: Int!){
 export const GET_MONTHLY_MOVEMENTS_BY_USER = gql`
   query GetMonthlyMovementsByUser($month: Int!){
     monthlyMovementsByUser(month: $month){
-    id
+      id
       name
+      debt
       movements{
         description
         value
         userShare
+        createdOn
+        user{
+          name
+        }
       }
     }
   }

@@ -75,9 +75,10 @@ export function AuthProvider({ children }: Props) {
             }
 
         } catch (error) {
+            console.log(window.location.href)
             console.log("error: ", error)
-            if (window.location.href != "http://localhost:3000/login")
-                window.location.href = "http://localhost:3000/login"
+            if (window.location.href != "http://192.168.1.130:3000/login")
+                window.location.href = "http://192.168.1.130:3000/login"
         }
     }, []);
 
@@ -122,6 +123,7 @@ export function AuthProvider({ children }: Props) {
                         token: token!
                     });
 
+                    window.location.href = "http://192.168.1.130:3000/";
                 }
             } catch (error) {
                 console.log("##### ERROR #2: ", error);

@@ -3,6 +3,8 @@ import { useQuery } from "@apollo/client";
 import { GET_MONTHLY_MOVEMENTS_BY_USER } from "../../api/graphql/queries/query";
 import { IUser } from "../../models/IUser";
 import { MovementsList } from "../MovementsList/MovementsList";
+import { IMovement } from "../../models/IMovement";
+
 
 export const UserMovements = () => {
   let date = new Date();
@@ -13,23 +15,32 @@ export const UserMovements = () => {
     }
   });
 
-  const [users, setUsers] = useState<IUser[]>();
+  const [movements, setMovements] = useState<IMovement[]>();
 
   useEffect(() => {
     const getMovements = async () => {
       let d = await refetch();
-      setUsers(d.data.monthlyMovementsByUser)
+      console.log(d.data.monthlyMovementsByUser);
+
+      const movementsList: IMovement[] = d.data.monthlyMovementsByUser[0].movements.concat(d.data.monthlyMovementsByUser[1].movements);
+
+      var sortedData = movementsList.sort((a: any, b: any) => {
+        console.log(a, b)
+        return new Date(a.createdOn).getDate() -
+          new Date(b.createdOn).getDate()
+      }).reverse();
+
+      setMovements(sortedData)
     }
 
     getMovements();
-  }, [users]);
+  }, []);
+
+  console.log(movements)
 
   return (
     <>
-      {users && users.map((user: IUser) => {
-        return (<MovementsList userMovements={user}></MovementsList>)
-      })}
-
+      {movements && (<MovementsList allMovements={movements}></MovementsList>)}
     </>
   );
 }

@@ -12,7 +12,9 @@ public interface IQuery
     /// </summary>
     /// <param name="month">Input from 0 - 11</param>
     /// <returns>Task<List<Movement>></returns>
-    public Task<List<Debt>> GetMonthlyDebtByUser(int month, [Service] MovementService service);
+    public Task<List<Debt>>? GetMonthlyDebtByUser(int month, [Service] MovementService service);
+
+    public Task<List<UserDTO>>? GetMonthlyMovementsByUser(int month, [Service] MovementService service);
 
     /// <summary>
     /// Gets a user by id

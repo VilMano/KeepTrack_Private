@@ -23,7 +23,7 @@ export const DELETE_USER = gql`
 `;
 
 export const CREATE_MOVEMENT = gql`
-  mutation CreateMovement($movement: MovementInput!){
+  mutation CreateMovement($movement: MovementDTOInput!){
     createMovement(movement: $movement){
       id
     }

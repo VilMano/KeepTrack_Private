@@ -6,4 +6,5 @@ export interface IMovement {
     userShare: number;
     description: string;
     user: IUser;
+    createdOn: string;
 }

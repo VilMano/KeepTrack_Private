@@ -15,7 +15,7 @@ interface Props {
 
 export const Insert = (props: Props) => {
 
-    const { id, name } = getUserInfo();
+    const user = getUserInfo();
     const [ createMovevement, { data, loading, error }] = useMutation(CREATE_MOVEMENT);
 
     const [ description, setDescription ] = useState('');
@@ -29,16 +29,13 @@ export const Insert = (props: Props) => {
         createMovevement({
             variables: {
                 movement: {
+                    id: 0,
                     description,
                     value: totalCost,
                     userShare: yourShare,
                     createdOn: dateCreated,
-                    category: category,
                     shared: true,
-                    user: {
-                        id,
-                        name
-                    }
+                    userId: user.id
                 }
             }
         })

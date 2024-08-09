@@ -1,6 +1,6 @@
 public interface IMovementService{
-    public Task<ResultWrapper<Debt>> GetMonthlyDebtsByUser(int month);
-    public Task<ResultWrapper<User>> GetMonthlyMovementsByUser(int month);
+    public Task<ResultWrapper<Debt?>> GetMonthlyDebtsByUser(int month);
+    public Task<ResultWrapper<UserDTO?>> GetMonthlyMovementsByUser(int month);
 
 
     public Task<ResultWrapper<Movement>> FetchMovement(int id);
