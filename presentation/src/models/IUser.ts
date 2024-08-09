@@ -1,7 +1,8 @@
 import { IMovement } from "./IMovement";
 
 export interface IUser {
-    id: number;
+    id: string;
     name: string;
+    debt?: number;
     movements: IMovement[];
 }

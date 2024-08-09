@@ -8,6 +8,8 @@ interface Props {
 export const MonthTotal = (props: Props) => {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+    console.log(props.month)
+
     return (<>
         <div className='column column-center'>
             <div className="total">

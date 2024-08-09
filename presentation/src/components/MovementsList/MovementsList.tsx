@@ -4,11 +4,11 @@ import Movement from "../Movement/Movement";
 import { IMovement } from "../../models/IMovement";
 
 interface Props {
-    userMovements: IUser;
+    allMovements: IMovement[];
 }
 
 export const MovementsList = (props: Props) => {
-    const movements = props.userMovements.movements;
+    const movements = props.allMovements;
 
     useEffect(() => {
     }, []);
@@ -18,7 +18,7 @@ export const MovementsList = (props: Props) => {
             movements.map((movement: IMovement) => {
                 return (<>
                     <div className="row">
-                        <Movement userName={props.userMovements.name} movement={movement}></Movement>
+                        <Movement userName={movement.user.name} movement={movement}></Movement>
                     </div>
                 </>)
             })}

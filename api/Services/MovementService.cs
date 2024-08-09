@@ -1,7 +1,3 @@
-using System.Data.Common;
-using Microsoft.Extensions.ObjectPool;
-using SQLitePCL;
-
 public class MovementService : IMovementService
 {
     private readonly IMovementRepository _repository;
@@ -56,7 +52,7 @@ public class MovementService : IMovementService
         return result;
     }
 
-    public async Task<ResultWrapper<Movement>> FetchMovement(int id)
+    public async Task<ResultWrapper<Movement?>> FetchMovement(int id)
     {
         ResultWrapper<Movement> result = new ResultWrapper<Movement>();
 
@@ -75,11 +71,12 @@ public class MovementService : IMovementService
         return result;
     }
 
-    public async Task<ResultWrapper<Debt>> GetMonthlyDebtsByUser(int month)
+    public async Task<ResultWrapper<Debt?>> GetMonthlyDebtsByUser(int month)
     {
-        ResultWrapper<Debt> result = new ResultWrapper<Debt>();
         try
         {
+            ResultWrapper<Debt> result = new ResultWrapper<Debt>();
+            
             var movements = await _repository.Movements(m =>
                 m.CreatedOn.Month == month && m.CreatedOn.Year == DateTime.UtcNow.Year
             );
@@ -88,24 +85,25 @@ public class MovementService : IMovementService
 
             List<Debt> debts = new List<Debt>();
 
-            users.Sort((p, q) => p.Id.CompareTo(q.Id));
 
             // create empty user slot
             debts.Add(new Debt());
             debts.Add(new Debt());
 
             int it = 0;
+
+            users.Sort((p, q) => p.Id.CompareTo(q.Id));
             foreach (User user in users)
             {
                 // create user object
                 debts[it].UserName = user.Name;
 
-                it++;
-
                 foreach (var spending in movements.Where(m => m.User.Id == user.Id))
                 {
                     debts[it].Value += spending.Value - spending.UserShare;
                 }
+                
+                it++;
             }
 
             result.Results = debts;
@@ -120,9 +118,9 @@ public class MovementService : IMovementService
         }
     }
 
-    public async Task<ResultWrapper<User>> GetMonthlyMovementsByUser(int month)
+    public async Task<ResultWrapper<UserDTO?>> GetMonthlyMovementsByUser(int month)
     {
-        ResultWrapper<User> result = new ResultWrapper<User>();
+        ResultWrapper<UserDTO> result = new ResultWrapper<UserDTO>();
 
         try
         {
@@ -131,19 +129,22 @@ public class MovementService : IMovementService
             );
 
             List<User> users = await _userRepository.Users(u => u.Id != "");
-            List<User> userMovements = new List<User>();
+            List<UserDTO> userMovements = new List<UserDTO>();
             int it = 0;
 
             users.Sort((p, q) => p.Id.CompareTo(q.Id));
             foreach (User user in users)
             {
+                var partner = users.Where(u => u.Id != user.Id).FirstOrDefault();
+
                 // create empty user slot
-                userMovements.Add(new User());
+                userMovements.Add(new UserDTO());
 
                 // create user object
-                User newUser = new User();
+                UserDTO newUser = new UserDTO();
                 newUser.Id = user.Id;
                 newUser.Name = user.Name;
+                newUser.Debt = partner.Movements.Sum(m => m.UserShare);
 
                 // insert user
                 userMovements[it] = newUser;
@@ -153,15 +154,15 @@ public class MovementService : IMovementService
                     userMovements[it].Movements.Add(movement);
                 }
 
+                userMovements[it].Movements.Sort((x, y) => DateTime.Compare(x.CreatedOn, y.CreatedOn));                
+
+                result.Results.Add(userMovements[it]);
                 it++;
             }
 
-            result.Results.Add(userMovements[0]);
-            result.Results.Add(userMovements[1]);
-
             result.Successful = true;
         }
-        catch (System.Exception)
+        catch (System.Exception ex)
         {
             result.Successful = false;
             throw;

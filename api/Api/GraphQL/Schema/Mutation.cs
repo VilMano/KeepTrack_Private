@@ -14,12 +14,35 @@ namespace Api.GraphQL.Shcema
         /// <param name="movement">Movement to create</param>
         /// <returns>Task<Movement></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<Movement> CreateMovement(Movement movement, [Service] MovementService service)
+        public async Task<Movement> CreateMovement(
+            MovementDTO movement,
+            [Service] MovementService service,
+            [Service] UserService userService
+        )
         {
-            ResultWrapper<Movement> newMovement = await service.CreateMovement(movement);
 
-            if(newMovement.Successful)
-                return newMovement.Results.FirstOrDefault();
+            var res = await userService.FetchUser(movement.UserId);
+
+            if(!res.Successful){
+                return null;
+            }
+
+            Movement newMovement = new Movement{
+                Id = movement.Id,
+                Description = movement.Description,
+                Value = movement.Value,
+                UserShare = movement.UserShare,
+                CreatedOn = movement.CreatedOn,
+                Shared = movement.Shared,
+                User = res.Results.FirstOrDefault()
+            };
+
+            ResultWrapper<Movement> result = await service.CreateMovement(newMovement);
+
+            if (result.Successful)
+            {
+                return result.Results.FirstOrDefault();
+            }
 
             return null;
         }
@@ -30,11 +53,14 @@ namespace Api.GraphQL.Shcema
         /// <param name="movement">Movement to update [id is mandatory]</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<Movement> UpdateMovement(Movement movement, [Service] MovementService service)
+        public async Task<Movement> UpdateMovement(
+            Movement movement,
+            [Service] MovementService service
+        )
         {
             ResultWrapper<Movement> updatedMovement = await service.UpdateMovement(movement);
 
-            if(updatedMovement.Successful)
+            if (updatedMovement.Successful)
                 return updatedMovement.Results.FirstOrDefault();
 
             return null;
@@ -80,7 +106,7 @@ namespace Api.GraphQL.Shcema
         {
             ResultWrapper<User> createdUser = await service.CreateUser(user);
 
-            if(createdUser.Successful)
+            if (createdUser.Successful)
                 return createdUser.Results.FirstOrDefault();
 
             return null;
@@ -96,7 +122,7 @@ namespace Api.GraphQL.Shcema
         {
             ResultWrapper<User> updatedUser = await service.UpdateUser(user);
 
-            if(updatedUser.Successful)
+            if (updatedUser.Successful)
                 return updatedUser.Results.FirstOrDefault();
 
             return null;
