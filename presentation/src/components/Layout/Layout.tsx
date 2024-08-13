@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext } from 'react';
 import './Layout.css';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, DefaultOptions } from '@apollo/client';
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import { HomePage } from '../../pages/Homepage/Homepage';
@@ -15,11 +15,21 @@ interface Props {
 export const Layout: React.FunctionComponent<Props> = (props: Props) => {
     const auth = useContext(UserContext);
 
-    
+    const defaultOptions: DefaultOptions = {
+        watchQuery: {
+          fetchPolicy: 'no-cache',
+          errorPolicy: 'ignore',
+        },
+        query: {
+          fetchPolicy: 'no-cache',
+          errorPolicy: 'all',
+        },
+      }
 
     const client = new ApolloClient({
         uri: 'http://192.168.1.130:5126/graphql',
         cache: new InMemoryCache(),
+        defaultOptions: defaultOptions,
         headers: {
             "Authorization": `Bearer ${window.sessionStorage.getItem('accessToken') ?? ""}`
         }

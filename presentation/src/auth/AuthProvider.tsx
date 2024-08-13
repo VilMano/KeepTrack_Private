@@ -75,7 +75,6 @@ export function AuthProvider({ children }: Props) {
             }
 
         } catch (error) {
-            console.log(window.location.href)
             console.log("error: ", error)
             if (window.location.href != "http://192.168.1.130:3000/login")
                 window.location.href = "http://192.168.1.130:3000/login"

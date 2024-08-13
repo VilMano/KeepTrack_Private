@@ -15,7 +15,7 @@ public class MovementRepository : IMovementRepository
     {
         try
         {
-            return await _context.Movements.Include(m => m.User).ToListAsync<Movement>(); 
+            return await _context.Movements.Where(expression).Include(m => m.User).ToListAsync<Movement>(); 
         }
         catch (System.Exception)
         {

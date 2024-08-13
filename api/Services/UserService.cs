@@ -100,6 +100,25 @@ public class UserService : IUserService
         return result;
     }
 
+    public async Task<ResultWrapper<User>> FetchUsers()
+    {
+        ResultWrapper<User> result = new ResultWrapper<User>();
+
+        try
+        {
+            List<User> user = await _repository.Users(u => u.Name != "");
+            result.Results = user;
+            result.Successful = true;
+        }
+        catch (Exception ex)
+        {
+            result.Errors.Add(ex.Message);
+            throw;
+        }
+
+        return result;
+    }
+
     public async Task<ResultWrapper<User>> UpdateUser(User inputUser)
     {
         ResultWrapper<User> result = new ResultWrapper<User>();
