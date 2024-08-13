@@ -128,6 +128,8 @@ public class MovementService : IMovementService
                 m.CreatedOn.Month == month && m.CreatedOn.Year == DateTime.UtcNow.Year
             );
 
+            var a = movements[0].CreatedOn;
+
             List<User> users = await _userRepository.Users(u => u.Id != "");
             List<UserDTO> userMovements = new List<UserDTO>();
             int it = 0;

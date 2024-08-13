@@ -82,6 +82,16 @@ namespace Api.GraphQL.Shcema
 
             return null;
         }
+
+        public async Task<List<User>> GetUsers([Service] UserService service)
+        {
+            ResultWrapper<User> user = await service.FetchUsers();
+
+            if (user.Successful)
+                return user.Results;
+
+            return null;
+        }
         #endregion
     }
 

@@ -37,6 +37,15 @@ export const GET_USER_BY_ID = gql`
   }
 `;
 
+export const GET_USERS = gql`
+  query GetUsers{
+    users{
+     id
+     name
+    }
+  }
+`;
+
 export const CREATE_USER = gql`
   mutation CreateUser($user: UserInput!){
    createUser(user: $user){

@@ -15,7 +15,7 @@ export const Input = (props: Props) => {
     var date = new Date();
 
     const [year, setYear] = useState(date.getUTCFullYear());
-    const [month, setMonth] = useState(date.getMonth()+1);
+    const [month, setMonth] = useState(date.getMonth() + 1);
     const [day, setDay] = useState(date.getUTCDate());
 
     const [category, setCategory] = useState('Select a category');
@@ -23,19 +23,27 @@ export const Input = (props: Props) => {
     const [selected, setSelected] = useState(false);
 
     useEffect(() => {
-        if(props.type == InputType.date){
-            props.setDefaultValue(new Date(`${year}-${month}-${day}`));
+        if (props.type == InputType.date) {
+            if (!isNaN(day) && !isNaN(month) && !isNaN(year))
+                props.setDefaultValue(new Date(`${year}-${month}-${day}`));
         }
 
     }, [selected]);
 
     const handleDateChange = (dateParam: string, value: string) => {
+        // console.log(`${year}-${month}-${day}`)
+
         switch (dateParam) {
             case 'day':
                 setDay(parseInt(value))
+                console.log(`${year}-${month}-${value}`)
+                props.setDefaultValue(new Date(`${year}-${month}-${parseInt(value)+1}`)); // idk why it needs the +1 ...
                 break;
             case 'month':
                 setMonth(parseInt(value))
+                console.log(`${year}-${value}-${day}`)
+                props.setDefaultValue(new Date(`${year}-${value}-${day}`));
+
                 break;
             case 'year':
                 setYear(parseInt(value))
@@ -44,8 +52,6 @@ export const Input = (props: Props) => {
             default:
                 break;
         }
-
-        props.setDefaultValue(new Date(`${year}-${month}-${day}`));
     }
 
     if (props.type == InputType.number) {
@@ -66,7 +72,7 @@ export const Input = (props: Props) => {
             <>
                 <div className="column">
                     <label>Year</label>
-                    <input type="number" value={year} onChange={e => handleDateChange('year' , e.target.value)} />
+                    <input type="number" value={year} onChange={e => handleDateChange('year', e.target.value)} />
                 </div>
                 <div className="column">
                     <label>Month</label>
@@ -74,7 +80,7 @@ export const Input = (props: Props) => {
                 </div>
                 <div className="column">
                     <label>Day</label>
-                    <input type="number" value={day} onChange={e => handleDateChange('day' ,e.target.value)} />
+                    <input type="number" value={day} onChange={e => handleDateChange('day', e.target.value)} />
                 </div>
             </>
         )

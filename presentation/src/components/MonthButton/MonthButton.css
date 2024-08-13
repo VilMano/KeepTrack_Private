@@ -1,0 +1,7 @@
+.month{
+    padding: .5rem;
+}
+
+.selected{
+    background-color: var(--dark-grey);
+}
