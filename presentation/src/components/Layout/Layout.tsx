@@ -27,7 +27,7 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
       }
 
     const client = new ApolloClient({
-        uri: 'http://192.168.1.130:5126/graphql',
+        uri: 'http://192.168.1.119:5126/graphql',
         cache: new InMemoryCache(),
         defaultOptions: defaultOptions,
         headers: {
