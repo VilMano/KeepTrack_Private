@@ -14,7 +14,6 @@ export function MonthSlider(props: Props) {
     const [thisMonth, setThisMonth] = useState<string>(months[props.month]);
 
     useEffect(() => {
-        console.log("Month: ", thisMonth);
 
     }, [thisMonth]);
 

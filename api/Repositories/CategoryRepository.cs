@@ -23,4 +23,17 @@ public class CategoryRepository : ICategoryRepository
             throw;
         }
     }
+
+    public async Task<Category> Category(int id)
+    {
+        try
+        {
+            return await _context
+                .Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
+    }
 }

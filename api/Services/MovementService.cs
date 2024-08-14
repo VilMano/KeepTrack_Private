@@ -2,11 +2,13 @@ public class MovementService : IMovementService
 {
     private readonly IMovementRepository _repository;
     private readonly IUserRepository _userRepository;
+    private readonly ICategoryRepository _categoryRepository;
 
-    public MovementService(IMovementRepository repository, IUserRepository userRepository)
+    public MovementService(IMovementRepository repository, IUserRepository userRepository, ICategoryRepository categoryRepository)
     {
         _repository = repository;
         _userRepository = userRepository;
+        _categoryRepository = categoryRepository;
     }
 
     public async Task<ResultWrapper<Movement>> CreateMovement(Movement inputMovement)
@@ -16,6 +18,8 @@ public class MovementService : IMovementService
         {
             User creator = await _userRepository.User(inputMovement.User.Id);
             inputMovement.User = creator;
+            Category category = await _categoryRepository.Category(inputMovement.CategoryId);
+            inputMovement.Category = category;
 
             Movement createdMovement = await _repository.CreateMovement(inputMovement);
             result.Results.Add(createdMovement);
