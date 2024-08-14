@@ -5,6 +5,7 @@ public class MovementDTO{
     public float UserShare { get; set; } = 0;
     public DateTime CreatedOn { get; set; }
     public bool Shared { get; set; } = true;
+    public Category Category { get; set; }
 
 
     public string UserId { get; set; } = string.Empty;

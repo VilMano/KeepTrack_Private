@@ -5,6 +5,7 @@ public class ExpensesContext : IdentityDbContext<User>
 {
     public DbSet<Movement> Movements { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Category> Categories { get; set; }
 
     public DbSet<ILog> Logs { get; set; }
 
@@ -18,6 +19,12 @@ public class ExpensesContext : IdentityDbContext<User>
     // special "local" folder for your platform.
     protected override void OnConfiguring(DbContextOptionsBuilder options){
         options.UseSqlite($"Data Source={DbPath}");
+    }
 
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<Category>().HasData(CateogrySeed.Categories);
     }
 }

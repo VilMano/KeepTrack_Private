@@ -58,11 +58,16 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 #region DI
 builder
     // repositories
-    .Services.AddScoped<IUserRepository, UserRepository>()
+    .Services
+    .AddScoped<ICategoryRepository, CategoryRepository>()
     .AddScoped<IMovementRepository, MovementRepository>()
+    .AddScoped<IUserRepository, UserRepository>()
     // services
+    .AddScoped<ICategoryService, CategoryService>()
     .AddScoped<IMovementService, MovementService>()
     .AddScoped<IUserService, UserService>()
+    
+    .AddScoped<CategoryService>()
     .AddScoped<MovementService>()
     .AddScoped<UserService>();
 #endregion
