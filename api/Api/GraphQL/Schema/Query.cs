@@ -93,6 +93,19 @@ namespace Api.GraphQL.Shcema
             return null;
         }
         #endregion
+
+        #region CATEGORIES
+        public async Task<List<Category>> GetCategories([Service] CategoryService service)
+        {
+            ResultWrapper<Category> user = await service.FetchCategory();
+
+            if (user.Successful)
+                return user.Results;
+
+            return null;
+        }
+
+        #endregion
     }
 
     class InputUser
