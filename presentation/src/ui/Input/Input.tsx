@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { InputType } from '../../models/InputType';
 import './Input.css';
 import { setDefaultResultOrder } from 'dns';
+import { ICategory } from '../../models/ICategory';
 
 interface Props {
     label: String;
     type: InputType;
-    categories?: String[];
+    categories?: ICategory[];
     defaultValue?: any;
     setDefaultValue: Function;
 }
@@ -27,21 +28,16 @@ export const Input = (props: Props) => {
             if (!isNaN(day) && !isNaN(month) && !isNaN(year))
                 props.setDefaultValue(new Date(`${year}-${month}-${day}`));
         }
-
     }, [selected]);
 
     const handleDateChange = (dateParam: string, value: string) => {
-        // console.log(`${year}-${month}-${day}`)
-
         switch (dateParam) {
             case 'day':
                 setDay(parseInt(value))
-                console.log(`${year}-${month}-${value}`)
                 props.setDefaultValue(new Date(`${year}-${month}-${parseInt(value)+1}`)); // idk why it needs the +1 ...
                 break;
             case 'month':
                 setMonth(parseInt(value))
-                console.log(`${year}-${value}-${day}`)
                 props.setDefaultValue(new Date(`${year}-${value}-${day}`));
 
                 break;
@@ -92,9 +88,9 @@ export const Input = (props: Props) => {
                 <label>Category</label>
                 <input readOnly type="text" onClick={(e) => { setSelected(!selected) }} value={category} />
                 <div className={`column column-center ${selected ? "" : "hidden"}`} style={{ width: "98%" }}>
-                    {props.categories?.map((categoryItem: any) => {
+                    {props.categories?.map((categoryItem: ICategory) => {
                         return (<>
-                            <div className="option" onClick={e => { setSelected(false); setCategory(categoryItem) }}>{categoryItem}</div>
+                            <div className="option" onClick={(e) => { setSelected(false); setCategory(categoryItem.name); props.setDefaultValue(categoryItem.name); }}>{categoryItem.name}</div>
                         </>);
                     })}
                 </div>

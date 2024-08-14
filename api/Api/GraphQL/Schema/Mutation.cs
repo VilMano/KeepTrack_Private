@@ -34,7 +34,8 @@ namespace Api.GraphQL.Shcema
                 UserShare = movement.UserShare,
                 CreatedOn = movement.CreatedOn,
                 Shared = movement.Shared,
-                User = res.Results.FirstOrDefault()
+                User = res.Results.FirstOrDefault(),
+                CategoryId = movement.CategoryId
             };
 
             ResultWrapper<Movement> result = await service.CreateMovement(newMovement);

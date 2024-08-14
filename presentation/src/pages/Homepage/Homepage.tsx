@@ -38,7 +38,13 @@ export const HomePage = () => {
 
     const [users, setUsers] = useState<IUser[]>();
 
+    
+
     useEffect(() => {
+        
+        setDebt(0);
+        console.log(debt)
+
         const getMovements = async () => {
 
             let d = await getMonthlyMovements({
@@ -77,18 +83,18 @@ export const HomePage = () => {
                 // set sum of the movements
                 allUsers![0].movements.forEach((movement: IMovement) => {
                     setTotal((total) => total + movement.value);
-                    totalUser1tmp = totalUser1tmp + movement.value;
+                    totalUser1tmp = totalUser1tmp + movement.userShare;
                     setTotalUser1((total) => total + movement.value);
                 });
 
                 allUsers![1].movements.forEach((movement: IMovement) => {
                     setTotal((total) => total + movement.value);
-                    totalUser2tmp = totalUser2tmp + movement.value;
+                    totalUser2tmp = totalUser2tmp + movement.userShare;
                     setTotalUser2((total) => total + movement.value);
                 });
 
-                console.log(debts[0].value)
 
+                console.log(totalUser1tmp, totalUser2tmp)
                 setDebt(totalUser1tmp > totalUser2tmp ? totalUser1tmp - totalUser2tmp : totalUser2tmp - totalUser1tmp);
             } else {
                 setTotal(0);
@@ -101,6 +107,8 @@ export const HomePage = () => {
 
         getMovements();
     }, [selectedMonth]);
+
+    console.log("Debt: ",debt)
 
     return (
         <Fragment>

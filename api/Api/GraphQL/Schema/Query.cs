@@ -97,7 +97,7 @@ namespace Api.GraphQL.Shcema
         #region CATEGORIES
         public async Task<List<Category>> GetCategories([Service] CategoryService service)
         {
-            ResultWrapper<Category> user = await service.FetchCategory();
+            ResultWrapper<Category> user = await service.FetchCategories();
 
             if (user.Successful)
                 return user.Results;

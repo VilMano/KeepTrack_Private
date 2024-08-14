@@ -12,7 +12,7 @@ interface Props {
 export function Debt(props: Props) {
     return (
         <>
-            <Card pos={props.positive} middleLabel={props.debt} label={props.username} text={`${props.totalUserAmount}€`} colour={Colours.neutral}></Card>
+            <Card pos={props.positive} topText={props.debt} bottomText={props.username} mainText={`${props.totalUserAmount}€`} colour={Colours.neutral}></Card>
         </>
     )
 }

@@ -23,6 +23,7 @@ export const Movement = (props: Props) => {
           <p className="description">{props.movement.description}</p>
           <p className="username" style={{fontSize: ".9rem"}}>{props.userName}</p>
           <label className="date">{props.movement.createdOn}</label>
+          <label className="cat">{props.movement.category.name}</label>
         </div>
         <div className="column">
           <p className="value">-{props.movement.value}€</p>

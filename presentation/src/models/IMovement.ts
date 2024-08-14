@@ -1,3 +1,4 @@
+import { ICategory } from "./ICategory";
 import { IUser } from "./IUser";
 
 export interface IMovement {
@@ -6,5 +7,6 @@ export interface IMovement {
     userShare: number;
     description: string;
     user: IUser;
+    category: ICategory;
     createdOn: string;
 }

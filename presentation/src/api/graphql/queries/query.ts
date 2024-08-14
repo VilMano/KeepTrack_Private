@@ -20,6 +20,10 @@ export const GET_MONTHLY_MOVEMENTS_BY_USER = gql`
         value
         userShare
         createdOn
+        category{
+          id
+          name
+        }
         user{
           name
         }
@@ -74,6 +78,10 @@ export const GET_MOVEMENT_BY_ID = gql`
       id
       description
       value
+      category{
+        id
+        name
+      }
     }
   }
 `;
@@ -97,5 +105,14 @@ mutation UpdateMovement($movement: MovementInput!){
 export const DELETE_MOVEMENT = gql`
  mutation DeleteMovement($id: Int!){
     deleteMovement(id: $id)    
+  }
+`;
+
+export const GET_CATEGORIES = gql`
+  query GetCategories{
+    categories{
+      id
+      name
+    }
   }
 `;
