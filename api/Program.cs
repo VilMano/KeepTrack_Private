@@ -1,14 +1,21 @@
+using System.Net;
 using System.Text;
 using System.Text.Json.Serialization;
 using Api.GraphQL.Shcema;
 using DotNet8WebAPI.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ExpensesContext>();
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.KnownProxies.Add(IPAddress.Parse("ktapi.vpspt.dev"));
+});
 
 // development cors
 builder.Services.AddCors(options =>
@@ -83,6 +90,11 @@ builder
     .AddQueryType<Query>();
 
 var app = builder.Build();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 
 app.UseCors("dev");
 
