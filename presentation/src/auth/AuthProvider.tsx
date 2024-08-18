@@ -72,12 +72,17 @@ export function AuthProvider({ children }: Props) {
                     user,
                     token
                 });
+
+                return;
             }
+
+            if (window.location.href != process.env.REACT_APP_UI + "/login")
+                window.location.href = process.env.REACT_APP_UI + "/login"
 
         } catch (error) {
             console.log("error: ", error)
-            if (window.location.href != "http://192.168.1.119:3000/login")
-                window.location.href = "http://192.168.1.119:3000/login"
+            if (window.location.href != process.env.REACT_APP_UI + "/login")
+                window.location.href = process.env.REACT_APP_UI + "/login"
         }
     }, []);
 
@@ -98,7 +103,6 @@ export function AuthProvider({ children }: Props) {
                         password
                     }
                 });
-
 
                 const { token } = res.data;
                 if (token.length > 0) {
@@ -122,7 +126,7 @@ export function AuthProvider({ children }: Props) {
                         token: token!
                     });
 
-                    window.location.href = "http://192.168.1.119:3000/";
+                    window.location.href = process.env.REACT_APP_UI!;
                 }
             } catch (error) {
                 console.log("##### ERROR #2: ", error);

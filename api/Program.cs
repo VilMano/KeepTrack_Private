@@ -53,7 +53,7 @@ builder.Services.AddAuthorization();
 
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(x =>
-   x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);;
+   x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
 #region DI
 builder
