@@ -1,6 +1,7 @@
 api/bin/
 api/obj/
 api/appsettings.json
+api/appsettings.Development.json
 api/wwwroot
 api/Data/movements.db
 
@@ -29,3 +30,7 @@ android/source/keeptrack/.env.production.local
 android/source/keeptrack/npm-debug.log*
 android/source/keeptrack/yarn-debug.log*
 android/source/keeptrack/yarn-error.log*
+
+
+presentation/.env
+
