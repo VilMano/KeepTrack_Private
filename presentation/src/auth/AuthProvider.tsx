@@ -57,6 +57,8 @@ export function AuthProvider({ children }: Props) {
     const initialize = useCallback(async () => {
         try {
             const token = window.sessionStorage.getItem('accessToken')!;
+
+            console.log("Is token set? ",  token.length > 0);
             if (token.length > 0) {
                 const claims = getSession(token!);
 
@@ -89,6 +91,7 @@ export function AuthProvider({ children }: Props) {
     const [checkAuthenticated, setCheckAuthenticated] = useState('');
 
     useEffect(() => {
+        console.log("Initialize")
         initialize();
     }, [initialize]);
 

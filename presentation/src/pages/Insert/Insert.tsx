@@ -63,6 +63,11 @@ export const Insert = (props: Props) => {
         })
     }
 
+    const handleSetTotalShare = (total: number) =>{
+        setTotalCost(total)
+        setYourShare(total/2);
+    }
+
     return (
         <Fragment>
             <div className="container" style={{ paddingTop: "8rem" }}>
@@ -70,7 +75,7 @@ export const Insert = (props: Props) => {
                     <Input type={InputType.text} setDefaultValue={setDescription} defaultValue={description} label={'Description'}></Input>
                 </div>
                 <div style={{ width: "100%"}} className="row row-center">
-                    <Input type={InputType.number} label={'Total cost'} setDefaultValue={setTotalCost} defaultValue={totalCost}></Input>
+                    <Input type={InputType.number} label={'Total cost'} setDefaultValue={handleSetTotalShare} defaultValue={totalCost}></Input>
                     <Input type={InputType.number} label={'Your share'} setDefaultValue={setYourShare} defaultValue={yourShare}></Input>
                 </div>
                 <div style={{ width: "100%"}} className="row row-center">

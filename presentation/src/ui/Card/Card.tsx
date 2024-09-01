@@ -11,8 +11,8 @@ interface Props {
 
 
 export const Card = (props: Props) => {
-    const midLabel = (<p className='personal-debt personal-debt'>- {props.topText}€</p>)
-    const midLabelAlt = (<p className='personal-debt personal-debt-pos'>+ {props.topText}€</p>)
+    const midLabel = (<p className='personal-debt personal-debt'>- {props.topText.toFixed(2)}€</p>)
+    const midLabelAlt = (<p className='personal-debt personal-debt-pos'>+ {props.topText.toFixed(2)}€</p>)
 
     const label = props.pos ? midLabel : midLabelAlt;
 

@@ -22,11 +22,11 @@ export const Movement = (props: Props) => {
         <div className="column">
           <p className="description">{props.movement.description}</p>
           <p className="username" style={{fontSize: ".9rem"}}>{props.userName}</p>
-          <label className="date">{props.movement.createdOn}</label>
+          <label className="date">{props.movement.createdOn.split('T')[0]}</label>
           <label className="cat">{props.movement.category.name}</label>
         </div>
         <div className="column">
-          <p className="value">-{props.movement.value}€</p>
+          <p className="value">-{props.movement.value.toFixed(2)}€</p>
         </div>
       </div>
     </>
