@@ -11,7 +11,7 @@ export const MonthTotal = (props: Props) => {
     return (<>
         <div className='column column-center'>
             <div className="total">
-                <h1 className="total-monthly">{props.total}€</h1>
+                <h1 className="total-monthly">{props.total.toFixed(2)}€</h1>
             </div>
             <label className='total-month'>Total - {months[props.month - 1]}</label>
         </div>
