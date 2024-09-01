@@ -94,20 +94,20 @@ public class MovementService : IMovementService
             debts.Add(new Debt());
             debts.Add(new Debt());
 
-            int it = 0;
+            int it = 1;
 
             users.Sort((p, q) => p.Id.CompareTo(q.Id));
+            // create user object
+            debts[0].UserName = users[0].Name;
+            debts[1].UserName = users[1].Name;
             foreach (User user in users)
             {
-                // create user object
-                debts[it].UserName = user.Name;
-
                 foreach (var spending in movements.Where(m => m.User.Id == user.Id))
                 {
                     debts[it].Value += spending.Value - spending.UserShare;
                 }
                 
-                it++;
+                it--;
             }
 
             result.Results = debts;
