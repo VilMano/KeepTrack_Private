@@ -18,7 +18,7 @@ export const MovementsList = (props: Props) => {
             movements.map((movement: IMovement) => {
                 return (<>
                     <div className="row">
-                        <Movement userName={movement.user.name} movement={movement}></Movement>
+                        <Movement key={movement.id} userName={movement.user.name} movement={movement}></Movement>
                     </div>
                 </>)
             })}

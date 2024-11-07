@@ -38,12 +38,9 @@ export const HomePage = () => {
 
     const [users, setUsers] = useState<IUser[]>();
 
-    
-
     useEffect(() => {
         
         setDebt(0);
-        console.log(debt)
 
         const getMovements = async () => {
 
@@ -94,7 +91,6 @@ export const HomePage = () => {
                 });
 
 
-                console.log(totalUser1tmp, totalUser2tmp)
                 setDebt(totalUser1tmp > totalUser2tmp ? totalUser1tmp - totalUser2tmp : totalUser2tmp - totalUser1tmp);
             } else {
                 setTotal(0);
@@ -107,8 +103,6 @@ export const HomePage = () => {
 
         getMovements();
     }, [selectedMonth]);
-
-    console.log("Debt: ",debt)
 
     return (
         <Fragment>

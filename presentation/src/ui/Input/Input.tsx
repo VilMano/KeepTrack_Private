@@ -34,7 +34,7 @@ export const Input = (props: Props) => {
         switch (dateParam) {
             case 'day':
                 setDay(parseInt(value))
-                props.setDefaultValue(new Date(`${year}-${month}-${parseInt(value)+1}`)); // idk why it needs the +1 ...
+                props.setDefaultValue(new Date(`${year}-${month}-${parseInt(value)}`));
                 break;
             case 'month':
                 setMonth(parseInt(value))
@@ -62,8 +62,6 @@ export const Input = (props: Props) => {
     }
 
     if (props.type == InputType.date) {
-        // props.setDefaultValue(new Date(`${year}-${month}-${day}`));
-
         return (
             <>
                 <div className="column">
