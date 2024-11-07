@@ -4,6 +4,7 @@
     border-radius: 5px;
     color: rgba(182, 182, 182, 0.897);
     display: flex;
+    flex-direction: column;
     padding: 1rem;
     border: 1px solid rgba(31, 29, 29, 0.884);
     justify-content: space-between;
@@ -11,6 +12,8 @@
     align-items: center;
 
     font-size: 1rem;
+
+
 }
 
 .description {
@@ -32,4 +35,27 @@
 .description, .username, .value, .date{
     margin: 0;
     padding: 0;
+}
+
+.bottom-menu{
+    justify-content: end;
+}
+
+.buttons{
+    display: flex;
+    gap: .5rem;
+}
+
+.buttons > input {
+    padding: 0rem 1rem;
+    max-height: 2rem!important;
+
+}
+
+.show{
+    display: flex!important;
+}
+
+.hide{
+    display: none!important;
 }

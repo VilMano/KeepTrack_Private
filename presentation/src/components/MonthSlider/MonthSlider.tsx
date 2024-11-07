@@ -28,9 +28,9 @@ export function MonthSlider(props: Props) {
                 {months.map((month: string, i: number) => {
                     if(i > 0 && i <= now.getMonth()+1){
                         if(month === thisMonth)
-                            return (<MonthButton month={i} onClick={handleClickMonth} isSelected={true}></MonthButton>);
+                            return (<MonthButton key={i} month={i} onClick={handleClickMonth} isSelected={true}></MonthButton>);
     
-                        return (<MonthButton month={i} onClick={handleClickMonth} isSelected={false}></MonthButton>)
+                        return (<MonthButton key={i} month={i} onClick={handleClickMonth} isSelected={false}></MonthButton>)
                     }
 
                  })}

@@ -16,6 +16,7 @@ export const GET_MONTHLY_MOVEMENTS_BY_USER = gql`
       name
       debt
       movements{
+        id
         description
         value
         userShare
